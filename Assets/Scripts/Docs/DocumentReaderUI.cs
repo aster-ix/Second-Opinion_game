@@ -20,11 +20,34 @@ public class DocumentReaderUI : MonoBehaviour
     public void Open(DocumentData doc)
     {
         _currentDoc = doc;
-        _pendingWords = new List<SelectableWord>(doc.selectableWords);
-        
+    
+        var existingEntries = NotebookController.Instance.GetEntries(doc.npcId);
+        var collectedWords = new HashSet<string>();
+    
+      
+        foreach (var entry in existingEntries)
+        {
+            foreach (var selectable in doc.selectableWords)
+            {
+                if (selectable.notebookEntry == entry.text)
+                {
+                    collectedWords.Add(selectable.word);
+                    break;
+                }
+            }
+        }
+    
+        _pendingWords = new List<SelectableWord>();
+        foreach (var word in doc.selectableWords)
+        {
+            if (!collectedWords.Contains(word.word))
+            {
+                _pendingWords.Add(word);
+            }
+        }
+    
         panel.SetActive(true);
         Refresh();
-        
     }
     public void Close()
     {panel.SetActive(false);}
@@ -35,10 +58,13 @@ public class DocumentReaderUI : MonoBehaviour
         if (Mouse.current == null) return;
         if (!Mouse.current.leftButton.wasPressedThisFrame) return;
 
-        int linkIdx = TMP_TextUtilities.FindIntersectingLink(
-            bodyText, Mouse.current.position.ReadValue(), null);
-
         
+        Camera cam = Camera.main;
+        if (cam == null) return;
+    
+        int linkIdx = TMP_TextUtilities.FindIntersectingLink(
+            bodyText, Mouse.current.position.ReadValue(), cam);
+    
         if (linkIdx >= 0)
             TryCollect(bodyText.textInfo.linkInfo[linkIdx].GetLinkID());
     }

@@ -87,9 +87,9 @@ public class NotebookController : MonoBehaviour
         //  метка по типу
         newEntryLabel.text = entry.type switch
         {
-            WordType.Name => $"★ {entry.text}",
-            WordType.Date => $"[date] {entry.text}",
-            WordType.Fact => $"◆ {entry.text}",
+            WordType.Name => $"- {entry.text}",
+            WordType.Date => $"- {entry.text}",
+            WordType.Fact => $"- {entry.text}",
             _             => entry.text
         };
 
