@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="76b0f887-fcb2-426b-a13d-69186a49c581" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Docs/DocumentCanvasAutoFit.cs" beforeDir="false" />
@@ -29,6 +32,11 @@
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "git-widget-placeholder": "aster",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -79,7 +87,7 @@
       <option name="presentableId" value="Default" />
       <updated>1774984084028</updated>
       <workItem from="1774984087512" duration="5000" />
-      <workItem from="1774984148781" duration="375000" />
+      <workItem from="1774984148781" duration="1833000" />
     </task>
     <servers />
   </component>

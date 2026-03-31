@@ -6,6 +6,8 @@ Shader "Custom/Test"
         [MainTexture] _BaseMap("Base Map", 2D) = "white" {}
         _LerpNumber("Lerp", Float) = 0.5
         _PixelateNumber("Pixelate", Float) = 1
+        _LightNumber("Light", Float) = 1
+        _CompareNumber("Compare", Float) = 0.5
     }
     SubShader
     {
@@ -29,6 +31,8 @@ Shader "Custom/Test"
                 float4 _BaseMap_TexelSize;
                 float _LerpNumber;
                 float _PixelateNumber;
+                float _LightNumber;
+                float _CompareNumber;
             CBUFFER_END
 
             #pragma vertex Vert
@@ -54,9 +58,9 @@ Shader "Custom/Test"
                     float2 pixelUV = snappedPixel / _ScreenParams.xy;
                     half4 img   = SAMPLE_TEXTURE2D(_BlitTexture, sampler_LinearClamp, floor(input.texcoord*_PixelateNumber)/_PixelateNumber);
                     half4 color = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, tiledUV);
-
-                    float col = floor(lerp(img.r, color.r, _LerpNumber));
-                    return col == 0
+                    img = img * _LightNumber/10;
+                    float col = (lerp(img.r, color.r, _LerpNumber/10));
+                    return col < _CompareNumber/10
                         ? half4(0.1804, 0.1333, 0.3098, 1.0)
                         : half4(0.8902, 0.6902, 0.4549, 1.0);
                 return img;
