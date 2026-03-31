@@ -8,6 +8,7 @@ Shader "Custom/Test"
         _PixelateNumber("Pixelate", Float) = 1
         _LightNumber("Light", Float) = 1
         _CompareNumber("Compare", Float) = 0.5
+        _EdgeThreshold("Edge", Float) = 0.5
     }
     SubShader
     {
@@ -33,6 +34,7 @@ Shader "Custom/Test"
                 float _PixelateNumber;
                 float _LightNumber;
                 float _CompareNumber;
+                float _EdgeThreshold;
             CBUFFER_END
 
             #pragma vertex Vert
@@ -54,15 +56,35 @@ Shader "Custom/Test"
                     float tilesY = _ScreenParams.y / tileHeight;
                     tileSize = float2(tilesX, tilesY); 
                     float2 tiledUV = frac(input.texcoord * tileSize);
+                    
                 
-                    float2 pixelUV = snappedPixel / _ScreenParams.xy;
-                    half4 img   = SAMPLE_TEXTURE2D(_BlitTexture, sampler_LinearClamp, floor(input.texcoord*_PixelateNumber)/_PixelateNumber);
+                    float2 pixelUV = floor(input.texcoord*_PixelateNumber)/_PixelateNumber;
+                    half4 img   = SAMPLE_TEXTURE2D(_BlitTexture, sampler_LinearClamp, pixelUV);
                     half4 color = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, tiledUV);
                     img = img * _LightNumber/10;
                     float col = (lerp(img.r, color.r, _LerpNumber/10));
-                    return col < _CompareNumber/10
-                        ? half4(0.1804, 0.1333, 0.3098, 1.0)
+                    
+                    float2 texel = 1.0 / _ScreenParams.xy;
+
+                    float3 right  = SAMPLE_TEXTURE2D(_BlitTexture, sampler_LinearClamp, pixelUV + float2(texel.x, 0)).rgb;
+                    float3 left   = SAMPLE_TEXTURE2D(_BlitTexture, sampler_LinearClamp, input.texcoord - float2(texel.x, 0)).rgb;
+
+                    float3 up     = SAMPLE_TEXTURE2D(_BlitTexture, sampler_LinearClamp, pixelUV + float2(0, texel.y)).rgb;
+                    float3 down   = SAMPLE_TEXTURE2D(_BlitTexture, sampler_LinearClamp, pixelUV - float2(0, texel.y)).rgb;
+
+                    float dx = length(right - left);
+                    float dy = length(up - down);
+
+                    float edge = dx + dy;
+
+                    edge = step(_EdgeThreshold, edge);
+
+                    //return half4(edge, edge, edge, 1.0);
+                    color = col < _CompareNumber/10
+                       ? half4(0.1804, 0.1333, 0.3098, 1.0)
                         : half4(0.8902, 0.6902, 0.4549, 1.0);
+                    color = edge > 0? half4(0.1804, 0.1333, 0.3098, 1.0) : color;
+                    return color;
                 return img;
             }
             ENDHLSL
