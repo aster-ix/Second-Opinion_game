@@ -18,12 +18,15 @@ public class SleepSystem : MonoBehaviour
 
     private GameTimeManager GameTimeManager;
     private SanitySystem sanitySystem;
+    private Pills pills;
     private int selectedHours = 8;
     private bool isSleeping = false;
+    private float LastSleepHour = GameTimeManager.initialTimeHours;
 
     void Start()
     {
         GameTimeManager = FindObjectOfType<GameTimeManager>();
+        pills = FindObjectOfType<Pills>();
         sanitySystem = FindObjectOfType<SanitySystem>();
         if (addHourButton != null)
             addHourButton.onClick.AddListener(AddHour);
@@ -41,23 +44,41 @@ public class SleepSystem : MonoBehaviour
 
         UpdateSleepTimeDisplay();
     }
+    
 
     public void OpenSleepPanel()
     {
+        
         if (isSleeping) return;
-
-        selectedHours = 8;
-        UpdateSleepTimeDisplay();
-
         if (sleepPanel != null)
             sleepPanel.SetActive(true);
 
         if (GameTimeManager != null)
             GameTimeManager.ToggleTime();
+        if (pills.isUsed == true)
+        {
+            addHourButton.enabled = false;
+            removeHourButton.enabled = false;
+            sleepButton.enabled = true;
+            selectedHours = 12;
+            UpdateSleepTimeDisplay();
+        }
+        else
+        {
+            CheckBlockSleep();
+            selectedHours = 8;
+            addHourButton.enabled = true;
+            removeHourButton.enabled = true;
+            UpdateSleepTimeDisplay();
+        }
+        
+
+        
     }
 
     public void CloseSleepPanel()
     {
+
         if (sleepPanel != null)
             sleepPanel.SetActive(false);
         if (GameTimeManager != null)
@@ -102,8 +123,12 @@ public class SleepSystem : MonoBehaviour
         {
             sanitySystem.ApplySleep(selectedHours);
         }
-
-
+        if(pills.isUsed == true)
+        {
+            pills.pillEffect();
+            addHourButton.enabled = true;
+            removeHourButton.enabled = true;
+        }
         isSleeping = true;
 
         
@@ -118,11 +143,28 @@ public class SleepSystem : MonoBehaviour
         isSleeping = false;
         CloseSleepPanel();
         var (hours, minutes) = GameTimeManager.GetCurrentTime();
+        LastSleepHour = hours + (minutes / 60f);
+        
 
-        if (GameTimeManager != null)
-            GameTimeManager.ToggleTime();
+        
     }
+    public void CheckBlockSleep()
+    {
+        float currentTime = GameTimeManager.CurrentTimeHours;
+        float blockEndTime = LastSleepHour + 3f;
 
+        if (currentTime < blockEndTime)
+        {
+            sleepButton.enabled = false;
+
+            float remaining = blockEndTime - currentTime;
+            Debug.Log($"Вы не можете спать еще {remaining:F1} часов");
+        }
+        else
+        {
+            sleepButton.enabled = true;
+        }
+    }
     public bool IsSleeping()
     {
         return isSleeping;

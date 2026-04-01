@@ -4,8 +4,8 @@ using TMPro;
 public class GameTimeManager : MonoBehaviour
 {
     [Header("Настройки времени")]
-    [SerializeField] private float initialTimeHours = 0f;
-    [SerializeField] private float initialTimeMinutes = 0f;
+    [SerializeField] public static float initialTimeHours = 0f;
+    [SerializeField] private static float initialTimeMinutes = 0f;
     [SerializeField] private bool autoStart = true;
 
     [Header("Текст сюда")]
@@ -88,8 +88,19 @@ public class GameTimeManager : MonoBehaviour
         currentTimeMinutes = Mathf.Max(0, (hours * 60f) + minutes);
         UpdateTimeDisplay();
     }
-
-
+    public void Add1Hour()
+    {
+        currentTimeMinutes += 60f;
+        currentTimeMinutes = Mathf.Max(0, currentTimeMinutes);
+        UpdateTimeDisplay();
+        //Debug.Log($"{CurrentTimeHours}");
+    }
+    public int GetCurrentTimeMinutes()
+    {
+        int totalMinutes = Mathf.FloorToInt(currentTimeMinutes);
+        int minutes = totalMinutes % 60;
+        return (minutes);
+    }
     public (int hours, int minutes) GetCurrentTime()
     {
         int totalMinutes = Mathf.FloorToInt(currentTimeMinutes);
