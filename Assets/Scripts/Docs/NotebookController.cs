@@ -3,108 +3,173 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
+// Синглтон. Хранит все записи плоским списком
 
-// Синглтон. Хранит записи по каждому NPC 
-// при добавлении записи блокнот выезжает, показывает запись, уезжает
+// API для диалогов:
+//   NotebookController.Instance.HasEntry(npcId, "Имя Жертвы")
+//   NotebookController.Instance.HasDialogueUnlock(npcId)
+//   NotebookController.Instance.GetEntries(npcId)
 
 public class NotebookController : MonoBehaviour
 {
     public static NotebookController Instance { get; private set; }
 
+
     public RectTransform notebookPanel;
-    public TMP_Text newEntryLabel;      // текст на выезжающем блокноте
+    public Vector2 hiddenPos;          // позиция за экраном (правый край)
+    public Vector2 visiblePos;         // позиция когда блокнот открыт
 
-    public Vector2 hiddenAnchorPos;    // за экраном (e.g. правый край: 1200, 0)
-    public Vector2 visibleAnchorPos;   // видимая позиция (e.g. 800, 0)
 
-    public float slideInTime  = 0.2f;
-    public float holdTime     = 0.5f;
-    public float slideOutTime = 0.2f;
+    public RectTransform notifStrip;      // ← новый отдельный объект
+    public TMP_Text      newEntryLabel;
+    public Vector2       notifHiddenPos;  // за экраном
+    public Vector2       notifPeekPos;    // видимая позиция
+    public float         slideInTime  = 0.2f;
+    public float         holdTime     = 0.5f;
+    public float         slideOutTime = 0.2f;
+
+
+    public TMP_Text entriesText;       // поле где отображаются записи при открытии
+
 
     public int maxEntriesPerNpc = 3;
 
-    // npcId = список записей
-    private readonly Dictionary<string, List<NotebookEntry>> _entries = new();
+  
+    private readonly List<NotebookEntry> _entries = new();
 
-    // очередь анимаций 
+
     private readonly Queue<NotebookEntry> _animQueue = new();
-    private bool _isPlaying;
+    private bool _isNotifPlaying;
+
+
+    private bool _isOpen;
+    private Coroutine _panelCoroutine;
 
 
     void Awake()
     {
         if (Instance != null) { Destroy(gameObject); return; }
         Instance = this;
-        notebookPanel.anchoredPosition = hiddenAnchorPos;
+        notebookPanel.anchoredPosition = hiddenPos;
+        notifStrip.anchoredPosition = notifHiddenPos;
     }
 
 
-    // Пробует добавить запись. возвращает true если успешно
     public bool TryAddEntry(string npcId, SelectableWord word)
     {
-        if (!_entries.ContainsKey(npcId))
-            _entries[npcId] = new List<NotebookEntry>();
+        int count = 0;
+        foreach (var e in _entries)
+            if (e.npcId == npcId) count++;
 
-        var list = _entries[npcId];
+        if (count >= maxEntriesPerNpc) return false;
+        if (_entries.Exists(e => e.npcId == npcId && e.text == word.notebookEntry)) return false;
 
-        //  лимит и дубликаты
-        if (list.Count >= maxEntriesPerNpc) return false;
-        if (list.Exists(e => e.text == word.notebookEntry)) return false;
+        var entry = new NotebookEntry(word.notebookEntry, word.type, npcId, word.unlocksDialogue);
+        _entries.Add(entry);
 
-        var entry = new NotebookEntry(word.notebookEntry, word.type, npcId);
-        list.Add(entry);
 
-        //  очередь анимации
-        _animQueue.Enqueue(entry);
-        if (!_isPlaying)
-            StartCoroutine(ProcessQueue());
+        if (!_isOpen)
+        {
+            _animQueue.Enqueue(entry);
+            if (!_isNotifPlaying)
+                StartCoroutine(ProcessNotifQueue());
+        }
+        else
+        {
+            RefreshEntriesText();
+        }
 
         return true;
     }
 
-    // все записи по конкретному NPC 
-    public List<NotebookEntry> GetEntries(string npcId)
+    // асе записи конкретного NPC
+    public NotebookEntry[] GetEntries(string npcId)
     {
-        return _entries.TryGetValue(npcId, out var list) ? list : new List<NotebookEntry>();
+        return _entries.FindAll(e => e.npcId == npcId).ToArray();
+    }
+
+    // проверить наличие конкретной записи — для условий диалога
+    public bool HasEntry(string npcId, string entryText)
+    {
+        return _entries.Exists(e => e.npcId == npcId && e.text == entryText);
+    }
+
+    // есть ли хоть одна запись, разблокирующая диалог у этого NPC
+    public bool HasDialogueUnlock(string npcId)
+    {
+        return _entries.Exists(e => e.npcId == npcId && e.unlocksDialogue);
     }
 
 
-    IEnumerator ProcessQueue()
+
+    public void ToggleNotebook()
     {
-        _isPlaying = true;
+        if (_panelCoroutine != null) StopCoroutine(_panelCoroutine);
+        _isOpen = !_isOpen;
+
+        if (_isOpen)
+        {
+            RefreshEntriesText();
+            _panelCoroutine = StartCoroutine(Slide(notebookPanel, notebookPanel.anchoredPosition, visiblePos, slideInTime));
+        }
+        else
+        {
+            _panelCoroutine = StartCoroutine(Slide(notebookPanel, notebookPanel.anchoredPosition, hiddenPos, slideOutTime));
+        }
+    }
+
+
+
+    void RefreshEntriesText()
+    {
+        if (entriesText == null) return;
+
+        var sb = new System.Text.StringBuilder();
+        string currentNpc = null;
+
+        foreach (var entry in _entries)
+        {
+            if (entry.npcId != currentNpc)
+            {
+                if (currentNpc != null) sb.AppendLine();
+                sb.AppendLine($"<b>{entry.npcId}</b>");
+                currentNpc = entry.npcId;
+            }
+            sb.AppendLine($"  — {entry.text}");
+        }
+
+        entriesText.text = sb.ToString();
+    }
+
+
+    IEnumerator ProcessNotifQueue()
+    {
+        _isNotifPlaying = true;
 
         while (_animQueue.Count > 0)
         {
             var entry = _animQueue.Dequeue();
-            yield return PlayAnimation(entry);
+            yield return PlayNotif(entry);
         }
 
-        _isPlaying = false;
+        _isNotifPlaying = false;
     }
 
-    IEnumerator PlayAnimation(NotebookEntry entry)
+    IEnumerator PlayNotif(NotebookEntry entry)
     {
-        //  метка по типу
-        newEntryLabel.text = entry.type switch
-        {
-            WordType.Name => $"- {entry.text}",
-            WordType.Date => $"- {entry.text}",
-            WordType.Fact => $"- {entry.text}",
-            _             => entry.text
-        };
-
-        yield return Slide(hiddenAnchorPos, visibleAnchorPos, slideInTime);
+        newEntryLabel.text = $"— {entry.text}";
+        yield return Slide(notifStrip, notifHiddenPos, notifPeekPos, slideInTime);
         yield return new WaitForSeconds(holdTime);
-        yield return Slide(visibleAnchorPos, hiddenAnchorPos, slideOutTime);
+        yield return Slide(notifStrip, notifPeekPos, notifHiddenPos, slideOutTime);
     }
 
-    IEnumerator Slide(Vector2 from, Vector2 to, float duration)
+    IEnumerator Slide(RectTransform rt, Vector2 from, Vector2 to, float duration)
     {
         for (float t = 0f; t < 1f; t += Time.deltaTime / duration)
         {
-            notebookPanel.anchoredPosition = Vector2.Lerp(from, to, Mathf.SmoothStep(0, 1, t));
+            rt.anchoredPosition = Vector2.Lerp(from, to, Mathf.SmoothStep(0, 1, t));
             yield return null;
         }
-        notebookPanel.anchoredPosition = to;
+        rt.anchoredPosition = to;
     }
 }

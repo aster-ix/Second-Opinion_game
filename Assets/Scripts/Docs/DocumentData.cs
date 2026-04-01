@@ -22,6 +22,7 @@ public class SelectableWord
     public string word; // точное совпадение с [текстом]
     public string notebookEntry; // что запишется в блокнот
     public WordType type;
+    public bool unlocksDialogue;
 }
 
 public enum WordType{Name, Date, Fact}
