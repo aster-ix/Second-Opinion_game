@@ -21,4 +21,5 @@ public class Choice
 {
     public string text; // вопрос игрока
     public DialogObject nextNode; // следующая ветка диалога
+    public int order = 0;
 }
