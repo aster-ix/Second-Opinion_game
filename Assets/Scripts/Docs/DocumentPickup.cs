@@ -7,7 +7,9 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Collider))]
 public class DocumentPickup : MonoBehaviour, IPointerClickHandler
 {
-
+    [SerializeField] private RectTransform ReaderPanel;
+    [SerializeField] private RectTransform NotebookPanel;
+    [SerializeField] private Canvas canvas;
     public DocumentData data;
     public DocumentReaderUI readerUI;
     public Transform readingAnchor;
@@ -43,13 +45,15 @@ public class DocumentPickup : MonoBehaviour, IPointerClickHandler
         if (!Mouse.current.leftButton.wasPressedThisFrame) return;
 
 
-        if (EventSystem.current.IsPointerOverGameObject()) return;
+        Vector2 mousePos = Mouse.current.position.ReadValue();
+        Camera cam = canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : Camera.main;
+        
+        bool insideReader = RectTransformUtility.RectangleContainsScreenPoint(ReaderPanel, mousePos, cam);
+        bool insideNoteBook = RectTransformUtility.RectangleContainsScreenPoint(NotebookPanel, mousePos, cam);
 
-        //  попал ли клик в  коллайдер
-        Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
-        bool hitThis = Physics.Raycast(ray, out RaycastHit hit) && hit.transform == transform;
+     
 
-        if (!hitThis)
+        if (!insideReader && !insideNoteBook) 
             StartCoroutine(PutDown());
     }
 

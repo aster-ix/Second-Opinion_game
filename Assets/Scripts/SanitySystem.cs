@@ -1,112 +1,136 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class SanitySystem : MonoBehaviour
 {
     [Header("Настройки рассудка")]
-    [SerializeField] private float maxSanity = 100f; 
-    [SerializeField] private float minSanity = 0f; 
-    [SerializeField] private float startingSanity = 100f; 
-    [SerializeField] private float sanityDecayPerHour = 2f; 
+    [SerializeField] private float maxSanity = 100f;
+    [SerializeField] private float minSanity = 0f;
+    [SerializeField] private float startingSanity = 100f;
 
     [Header("Влияние сна на рассудок")]
-    [SerializeField] private float optimalSleepHours = 8f; 
-    [SerializeField] private float maxBonusSanity = 20f; 
-    [SerializeField] private float maxPenaltySanity = 30f; 
+    [SerializeField] private float optimalSleepHours = 8f;
+    [SerializeField] private float maxPenaltySanity = 15f;
 
-    [SerializeField] private TextMeshProUGUI sanityText; 
-    [SerializeField] private Slider sanitySlider; 
+    [Header("UI Компоненты")]
+    [SerializeField] private TextMeshProUGUI sanityText;
+    [SerializeField] private Slider sanitySlider;
+
+    private class SleepRecord
+    {
+        public float sleepTime; 
+        public float duration; 
+    }
 
     private float currentSanity;
-    private GameTimeManager GameTimeManager;
-    private float lastUpdateTime; 
+    private GameTimeManager gameTimeManager;
+
+    private List<SleepRecord> sleepRecords = new List<SleepRecord>();
+    private float lastPenaltyCheckTime = 0f;
     private bool isSleeping = false;
 
     void Start()
     {
-        GameTimeManager = FindObjectOfType<GameTimeManager>();
+        gameTimeManager = FindObjectOfType<GameTimeManager>();
         currentSanity = startingSanity;
-        lastUpdateTime = GameTimeManager.CurrentTimeMinutes;
+        lastPenaltyCheckTime = gameTimeManager.CurrentTimeHours;
 
         UpdateSanityDisplay();
     }
 
     void Update()
     {
-        if (GameTimeManager != null && !isSleeping)
+        if (gameTimeManager != null && !isSleeping)
         {
-            UpdateSanityOverTime();
+            CheckAndApplySanityPenalty();
         }
     }
 
-    
-    void UpdateSanityOverTime()
+    float GetSleepHoursLast24Hours()
     {
-        float currentTime = GameTimeManager.CurrentTimeMinutes;
-        float timePassed = currentTime - lastUpdateTime;
+        float currentGameTime = gameTimeManager.CurrentTimeHours;
+        
+        float sleepTotal = 0f;
 
-        if (timePassed >= 1f) 
+        for (int i = sleepRecords.Count - 1; i >= 0; i--)
         {
-            
-            float hoursPassed = timePassed / 60f;
-            float sanityChange = -sanityDecayPerHour * hoursPassed;
+            if (currentGameTime - sleepRecords[i].sleepTime > 24f)
+            {
+                sleepRecords.RemoveAt(i);
+            }
+            else
+            {
+                sleepTotal += sleepRecords[i].duration;
+            }
+        }
 
-            ChangeSanity(sanityChange);
+        return sleepTotal;
+    }
 
-            lastUpdateTime = currentTime;
+    void CheckAndApplySanityPenalty()
+    {
+        float currentTime = gameTimeManager.CurrentTimeHours;
+
+        if (currentTime - lastPenaltyCheckTime >= 24f)
+        {
+            float sleepHoursLast24 = GetSleepHoursLast24Hours();
+            float sleepRatio = sleepHoursLast24 / optimalSleepHours;
+
+            if (sleepRatio < 1f)
+            {
+                float penaltyPercent = 1f - sleepRatio;
+                float penalty = penaltyPercent * maxPenaltySanity;
+
+                if (penalty > 0.01f)
+                {
+                    ChangeSanity(-penalty);
+                    Debug.Log($"За последние 24 часа: {sleepHoursLast24:F1} / {optimalSleepHours} ч сна. Штраф: -{penalty:F2} рассудка");
+                }
+            }
+            else
+            {
+                Debug.Log($"За последние 24 часа: {sleepHoursLast24:F1} / {optimalSleepHours} ч сна. Штрафа нет");
+            }
+
+            lastPenaltyCheckTime = currentTime;
         }
     }
 
-    
-    public void ApplySleep(int sleepHours)
+    public void ApplySleep(float sleepHours)
     {
+        if (isSleeping) return;
+
         isSleeping = true;
-
-        
-        float sleepEffect = CalculateSleepEffect(sleepHours);
-
-        ChangeSanity(sleepEffect);
-
-        
-
+        AddSleepHours(sleepHours);
         isSleeping = false;
-        lastUpdateTime = GameTimeManager.CurrentTimeMinutes; 
     }
 
-
-    float CalculateSleepEffect(int sleepHours)
+    public void AddSleepHours(float hours)
     {
-        float difference = sleepHours - optimalSleepHours;
+        float currentTime = gameTimeManager.CurrentTimeHours;
 
-        if (Mathf.Abs(difference) < 0.1f) 
+        SleepRecord record = new SleepRecord
         {
-            return 0f; 
-        }
-        else if (difference > 0) 
+            sleepTime = currentTime,
+            duration = hours
+        };
+
+        sleepRecords.Add(record);
+        Debug.Log($"Добавлен сон {hours} часов в {currentTime:F2}");
+        if (record.duration >= optimalSleepHours)
         {
-            
-            float bonus = (difference / (24f - optimalSleepHours)) * maxBonusSanity;
-            return Mathf.Min(bonus, maxBonusSanity);
-        }
-        else 
-        {
-            
-            float penalty = (Mathf.Abs(difference) / optimalSleepHours) * maxPenaltySanity;
-            return -Mathf.Min(penalty, maxPenaltySanity);
+            lastPenaltyCheckTime = currentTime;
         }
     }
-    //РАССУДОК МОЖЕТ БЫТЬ - 
+
     public void ChangeSanity(float amount)
     {
-        float oldSanity = currentSanity;
         currentSanity = Mathf.Clamp(currentSanity + amount, minSanity, maxSanity);
-
         UpdateSanityDisplay();
-
     }
 
-    
     void UpdateSanityDisplay()
     {
         if (sanityText != null)
@@ -118,17 +142,11 @@ public class SanitySystem : MonoBehaviour
         {
             sanitySlider.value = currentSanity / maxSanity;
         }
-
     }
 
     public float GetCurrentSanity()
     {
         return currentSanity;
-    }
-
-    public float GetSanityPercent()
-    {
-        return currentSanity / maxSanity;
     }
 
     public void SetSanity(float value)
@@ -137,4 +155,8 @@ public class SanitySystem : MonoBehaviour
         UpdateSanityDisplay();
     }
 
+    public float GetSleepHoursLast24()
+    {
+        return GetSleepHoursLast24Hours();
+    }
 }
