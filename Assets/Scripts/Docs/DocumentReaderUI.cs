@@ -56,8 +56,10 @@ public class DocumentReaderUI : MonoBehaviour
         Camera cam = Camera.main;
         if (cam == null) return;
 
+        Canvas canvas = bodyText.canvas;
+        Camera uiCam = (canvas.renderMode == RenderMode.ScreenSpaceOverlay) ? null : cam;
         int linkIdx = TMP_TextUtilities.FindIntersectingLink(
-            bodyText, Mouse.current.position.ReadValue(), cam);
+            bodyText, Mouse.current.position.ReadValue(), uiCam);
 
         if (linkIdx >= 0)
             TryCollect(bodyText.textInfo.linkInfo[linkIdx].GetLinkID());
