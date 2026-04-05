@@ -17,11 +17,14 @@ MonoBehaviour:
   - text: 1
     nextNode: {fileID: 11400000, guid: 581a6a367c6609c438b31f5a42b1af35, type: 2}
     order: 0
+    isLast: 0
   - text: 2
     nextNode: {fileID: 11400000, guid: f025b94a70196f443ac5ff91e74e1787, type: 2}
     order: 1
+    isLast: 0
   - text: 3
     nextNode: {fileID: 11400000, guid: e6fdcec69015e684ea25c32020a523ce, type: 2}
     order: 2
+    isLast: 1
   isActive: 1
   wasSelected: 1

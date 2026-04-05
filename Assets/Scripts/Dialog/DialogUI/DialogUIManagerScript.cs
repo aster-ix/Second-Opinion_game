@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,7 +12,9 @@ public class DialogUIManagerScript : MonoBehaviour
     public GameObject arrowOpen;     // иконка стрелки когда варианты скрыты  
     public GameObject arrowClose;    // иконка стрелки когда варианты открыты 
 
-    public DialogManager dialogManager;
+    [CanBeNull] public DialogManager dialogManager;
+    public NPCManager NPCManager;
+    public Button NextDialogButton;
 
     private List<GameObject> _buttons = new();
     private bool _choicesVisible = true;
@@ -36,21 +39,21 @@ public class DialogUIManagerScript : MonoBehaviour
 
     public void PreviousDialog()
     {
-        dialogManager.PreviousDialog();
+        dialogManager?.PreviousDialog();
         ShowCurrentDialog();
     }
 
 
-    void ShowCurrentDialog()
+    public void ShowCurrentDialog()
     {
-        if (dialogManager.currentDialog == null) return;
+        if (dialogManager?.currentDialog == null) return;
 
         choiceText.text = dialogManager.currentDialog.text;
         BuildChoiceButtons();
     }
 
-   void BuildChoiceButtons()
-{
+    public void BuildChoiceButtons()
+    {
     foreach (var btn in _buttons)
         Destroy(btn);
     _buttons.Clear();
@@ -68,7 +71,15 @@ public class DialogUIManagerScript : MonoBehaviour
         btn.SetActive(_choicesVisible); 
 
         Choice captured = choice;
-        btn.GetComponent<Button>().onClick.AddListener(() => OnChoiceClicked(captured));
+        if (!captured.isLast)
+        {
+            btn.GetComponent<Button>().onClick.AddListener(() => OnChoiceClicked(captured));
+        }
+        else
+        {
+            btn.GetComponent<Button>().onClick.AddListener(CloseDialog);
+        }
+
         btn.GetComponentInChildren<TMP_Text>().text = choice.text;
         btn.GetComponent<Button>().interactable = choice.nextNode != null && choice.nextNode.isActive;
 
@@ -80,5 +91,14 @@ public class DialogUIManagerScript : MonoBehaviour
     {
         dialogManager.NextDialog(dialogManager.choices.IndexOf(choice));
         ShowCurrentDialog();
+    }
+
+    public void CloseDialog()
+    {
+        NextDialogButton.interactable = true;
+        dialogManager = null;
+        NPCManager.DeleteNPC();
+        foreach (var btn in _buttons) Destroy(btn);
+        _buttons.Clear();
     }
 }

@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DialogObject
   text: thdshrtjuh
   choices: []
-  isActive: 0
-  wasSelected: 1
+  isActive: 1
+  wasSelected: 0
