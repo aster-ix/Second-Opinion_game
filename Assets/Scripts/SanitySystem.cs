@@ -16,7 +16,7 @@ public class SanitySystem : MonoBehaviour
 
     [Header("UI Компоненты")]
     [SerializeField] private TextMeshProUGUI sanityText;
-    [SerializeField] private Slider sanitySlider;
+    [SerializeField] private Image sanitySlider;
 
     private class SleepRecord
     {
@@ -140,7 +140,7 @@ public class SanitySystem : MonoBehaviour
 
         if (sanitySlider != null)
         {
-            sanitySlider.value = currentSanity / maxSanity;
+            sanitySlider.material.SetFloat("_Value", currentSanity / maxSanity);
         }
     }
 

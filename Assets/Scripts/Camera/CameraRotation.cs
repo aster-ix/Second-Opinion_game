@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class CameraRotation : MonoBehaviour
 {
-    
-    [SerializeField] private float rotationAngle = 45f; 
-    [SerializeField] private float rotationSpeed = 2f; 
-    [SerializeField] private bool useSmoothRotation = true; 
+    [SerializeField] private float rotationAngle = 45f;
+    [SerializeField] private float rotationSpeed = 2f;
+    [SerializeField] private bool useSmoothRotation = true;
+    public GameObject HUD;
 
     private Quaternion targetRotation;
     private Quaternion startRotation;
@@ -15,7 +15,6 @@ public class CameraRotation : MonoBehaviour
 
     void Start()
     {
-        
         targetRotation = transform.rotation;
         startRotation = transform.rotation;
         currentYRotation = transform.eulerAngles.y;
@@ -29,21 +28,19 @@ public class CameraRotation : MonoBehaviour
 
             if (rotationProgress >= 1f)
             {
-                
                 transform.rotation = targetRotation;
                 isRotating = false;
                 rotationProgress = 0f;
+                ShowHUD();  
             }
             else
             {
-                
                 float t = useSmoothRotation ? Mathf.SmoothStep(0f, 1f, rotationProgress) : rotationProgress;
                 transform.rotation = Quaternion.Slerp(startRotation, targetRotation, t);
             }
         }
     }
 
-    
     public void RotateRight()
     {
         if (!isRotating)
@@ -53,10 +50,10 @@ public class CameraRotation : MonoBehaviour
             targetRotation = Quaternion.Euler(transform.eulerAngles.x, currentYRotation, transform.eulerAngles.z);
             isRotating = true;
             rotationProgress = 0f;
+            HideHUD();  
         }
     }
 
-    
     public void RotateLeft()
     {
         if (!isRotating)
@@ -66,15 +63,19 @@ public class CameraRotation : MonoBehaviour
             targetRotation = Quaternion.Euler(transform.eulerAngles.x, currentYRotation, transform.eulerAngles.z);
             isRotating = true;
             rotationProgress = 0f;
+            HideHUD();  
         }
     }
 
-    
-    
-
-    /*
-    public void SetRotationAngle(float angle)
+    private void HideHUD()
     {
-        rotationAngle = angle;
-    }*/
+        if (HUD != null)
+            HUD.SetActive(false);
+    }
+
+    private void ShowHUD()
+    {
+        if (HUD != null)
+            HUD.SetActive(true);
+    }
 }
