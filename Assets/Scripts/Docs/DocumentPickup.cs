@@ -17,6 +17,7 @@ public class DocumentPickup : MonoBehaviour, IPointerClickHandler
 
     public float          animDuration = 0.35f;
     public AnimationCurve animCurve    = AnimationCurve.EaseInOut(0, 0, 1, 1);
+    public Animator animator;
 
     private Vector3    _originPos;
     private Quaternion _originRot;
@@ -74,6 +75,7 @@ public class DocumentPickup : MonoBehaviour, IPointerClickHandler
     {
         _isAnimating = true;
         _isReading   = true;
+        animator.Play("Doc_opening", 0, 0.0f);
         yield return AnimateTo(readingAnchor.position, readingAnchor.rotation);
         readerUI.Open(data);
         _isAnimating = false;
@@ -83,6 +85,7 @@ public class DocumentPickup : MonoBehaviour, IPointerClickHandler
     {
         _isAnimating = true;
         readerUI.Close();
+        animator.Play("Doc_closing", 0, 0.0f);
         yield return AnimateTo(_originPos, _originRot);
         _isReading   = false;
         _isAnimating = false;
@@ -100,7 +103,7 @@ public class DocumentPickup : MonoBehaviour, IPointerClickHandler
             transform.rotation = Quaternion.Lerp(startRot, targetRot, curved);
             yield return null;
         }
-
+        
         transform.position = targetPos;
         transform.rotation = targetRot;
     }
