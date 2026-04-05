@@ -275,6 +275,7 @@ MonoBehaviour:
   choiceParent: {fileID: 228404362}
   buttonPrefab: {fileID: 7455850355439968140, guid: 308fc71b7b59ff146a459ff142f1c0e7, type: 3}
   dialogManager: {fileID: 2112875316}
+  lockedNode: {fileID: 0}
 --- !u!1 &273201364
 GameObject:
   m_ObjectHideFlags: 0
@@ -883,6 +884,30 @@ PrefabInstance:
       propertyPath: m_text
       value: <-
       objectReference: {fileID: 0}
+    - target: {fileID: 5630393006512300059, guid: 308fc71b7b59ff146a459ff142f1c0e7, type: 3}
+      propertyPath: m_fontColor.b
+      value: 0.61960787
+      objectReference: {fileID: 0}
+    - target: {fileID: 5630393006512300059, guid: 308fc71b7b59ff146a459ff142f1c0e7, type: 3}
+      propertyPath: m_fontColor.g
+      value: 0.81960785
+      objectReference: {fileID: 0}
+    - target: {fileID: 5630393006512300059, guid: 308fc71b7b59ff146a459ff142f1c0e7, type: 3}
+      propertyPath: m_fontColor.r
+      value: 0.99607843
+      objectReference: {fileID: 0}
+    - target: {fileID: 5630393006512300059, guid: 308fc71b7b59ff146a459ff142f1c0e7, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4288598526
+      objectReference: {fileID: 0}
+    - target: {fileID: 6595852884360829713, guid: 308fc71b7b59ff146a459ff142f1c0e7, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6595852884360829713, guid: 308fc71b7b59ff146a459ff142f1c0e7, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 42dc66dd684534d4e8c070c20046d27c, type: 3}
     - target: {fileID: 7455850355439968140, guid: 308fc71b7b59ff146a459ff142f1c0e7, type: 3}
       propertyPath: m_Name
       value: Button

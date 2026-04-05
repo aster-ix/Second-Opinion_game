@@ -48,8 +48,8 @@ public class DialogManager : MonoBehaviour
     {
         if (choices == null || choiceIndex >= choices.Count) return;
 
-        _history.Add(currentDialog);
         currentDialog = choices[choiceIndex].nextNode;
+        _history.Add(currentDialog);
         choices = currentDialog.choices;
         currentDialog.wasSelected = true;
     }
@@ -59,7 +59,7 @@ public class DialogManager : MonoBehaviour
     {
         if (_history.Count <= 1) return;
 
-        currentDialog = _history[_history.Count - 1];
+        currentDialog = _history[_history.Count - 2];
         _history.RemoveAt(_history.Count - 1);
         choices = currentDialog.choices;
     }

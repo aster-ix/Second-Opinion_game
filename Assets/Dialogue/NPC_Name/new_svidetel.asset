@@ -13,6 +13,9 @@ MonoBehaviour:
   m_Name: new_svidetel
   m_EditorClassIdentifier: Assembly-CSharp::DialogObject
   text: sadasdasdasda
-  choices: []
+  choices:
+  - text: 1234
+    nextNode: {fileID: 11400000, guid: 75e8bc983c39e7342a79729dcc625c3f, type: 2}
+    order: 0
   isActive: 1
   wasSelected: 1

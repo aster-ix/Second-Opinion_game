@@ -145,7 +145,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4498734329940924853, guid: 308fc71b7b59ff146a459ff142f1c0e7, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ToggleChoices
+      value: PreviousDialog
       objectReference: {fileID: 0}
     - target: {fileID: 4498734329940924853, guid: 308fc71b7b59ff146a459ff142f1c0e7, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -255,11 +255,6 @@ PrefabInstance:
 --- !u!224 &12168975 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4589093999828245596, guid: 308fc71b7b59ff146a459ff142f1c0e7, type: 3}
-  m_PrefabInstance: {fileID: 12168974}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &12168976 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7455850355439968140, guid: 308fc71b7b59ff146a459ff142f1c0e7, type: 3}
   m_PrefabInstance: {fileID: 12168974}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &22018329
@@ -540,6 +535,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Pills
   sanityRestoreAmount: 20
   PillsAmount: 3
+  animator: {fileID: 0}
   isUsed: 0
 --- !u!1 &67461053
 GameObject:
@@ -4247,7 +4243,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DialogUIManagerScript
   choiceText: {fileID: 418948086}
   choiceParent: {fileID: 1111238167}
-  buttonPrefab: {fileID: 12168976}
+  buttonPrefab: {fileID: 7455850355439968140, guid: 308fc71b7b59ff146a459ff142f1c0e7, type: 3}
   arrowOpen: {fileID: 0}
   arrowClose: {fileID: 0}
   dialogManager: {fileID: 1413684294}
