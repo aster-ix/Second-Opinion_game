@@ -18,7 +18,7 @@ public class DialogUIManagerScript : MonoBehaviour
 
     private List<GameObject> _buttons = new();
     private bool _choicesVisible = true;
-
+    public bool isOver = false;
 
     void Start()
     {
@@ -47,7 +47,7 @@ public class DialogUIManagerScript : MonoBehaviour
     public void ShowCurrentDialog()
     {
         if (dialogManager?.currentDialog == null) return;
-
+        isOver = false;
         choiceText.text = dialogManager.currentDialog.text;
         BuildChoiceButtons();
     }
@@ -100,5 +100,6 @@ public class DialogUIManagerScript : MonoBehaviour
         NPCManager.DeleteNPC();
         foreach (var btn in _buttons) Destroy(btn);
         _buttons.Clear();
+        isOver = true;
     }
 }
