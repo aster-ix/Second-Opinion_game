@@ -29,7 +29,7 @@ public class Shiza : MonoBehaviour
     public void Appearing()
     {
 
-        //if (!DialogOver) return;
+        if (!DialogOver) return;
         float SpawnChance = Random.Range(50f, 100f);
         if (SanityChance < SpawnChance)
         {
