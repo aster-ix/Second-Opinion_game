@@ -16,6 +16,7 @@ public class SleepSystem : MonoBehaviour
     [SerializeField] private int minSleepHours = 1;
     [SerializeField] private int maxSleepHours = 12;
 
+    private NPCManager nPCManager;
     private GameTimeManager GameTimeManager;
     private SanitySystem sanitySystem;
     private Pills pills;
@@ -25,6 +26,7 @@ public class SleepSystem : MonoBehaviour
 
     void Start()
     {
+        nPCManager = FindObjectOfType<NPCManager>();
         GameTimeManager = FindObjectOfType<GameTimeManager>();
         pills = FindObjectOfType<Pills>();
         sanitySystem = FindObjectOfType<SanitySystem>();
@@ -139,7 +141,7 @@ public class SleepSystem : MonoBehaviour
     void EndSleep()
     {
         if (!isSleeping) return;
-
+        nPCManager.CurrentQuestionNum = 0;
         isSleeping = false;
         CloseSleepPanel();
         var (hours, minutes) = GameTimeManager.GetCurrentTime();

@@ -10,7 +10,7 @@ public class NPCManager : MonoBehaviour
     public DialogUIManagerScript UIManager;
     public int QuestionNum = 2;
     public int CurrentQuestionNum = 0;
-    
+    public Animator animator;
     [SerializeField] 
     private GameObject _currentNPC;
     void Start()
@@ -24,6 +24,7 @@ public class NPCManager : MonoBehaviour
     }
     public void NextNPC()
     {
+        animator.Play("Bell_ringing", 0, 0.0f);
         if (CurrentQuestionNum == QuestionNum) return;
         if (!DialogUI.activeInHierarchy)  DialogUI.SetActive(true);
         DeleteNPC();
