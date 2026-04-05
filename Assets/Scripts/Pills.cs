@@ -5,6 +5,7 @@ public class Pills : MonoBehaviour
     [Header("Настройки таблетки")]
     [SerializeField] private float sanityRestoreAmount = 20f;
     [SerializeField] private int PillsAmount = 3;
+    public Animator animator;
     public bool isUsed = false;
 
     private SanitySystem sanitySystem;
@@ -22,6 +23,7 @@ public class Pills : MonoBehaviour
         {
             if (!isUsed)
             {
+                animator.Play("Piils_Popils",0, 0.0f);
                 PillsAmount -= 1;
                 isUsed = true;
                 Debug.Log($"Таблеток осталось {PillsAmount}");
