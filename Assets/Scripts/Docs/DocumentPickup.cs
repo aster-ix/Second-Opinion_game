@@ -1,32 +1,36 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
-
 [RequireComponent(typeof(Collider))]
 public class DocumentPickup : MonoBehaviour, IPointerClickHandler
 {
-
-    public DocumentData data;
+    public DocumentData     data;
     public DocumentReaderUI readerUI;
-    public Transform readingAnchor;
+    public Transform        readingAnchor;
 
+    [Header("Панели которые блокируют откладывание документа")]
 
-    public float animDuration = 0.35f;
-    public AnimationCurve animCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
+    public List<RectTransform> blockingPanels = new();
 
-    private Vector3 _originPos;
+    public float          animDuration = 0.35f;
+    public AnimationCurve animCurve    = AnimationCurve.EaseInOut(0, 0, 1, 1);
+
+    private Vector3    _originPos;
     private Quaternion _originRot;
-    private bool _isReading;
-    private bool _isAnimating;
+    private bool       _isReading;
+    private bool       _isAnimating;
+
+
+    private readonly List<RaycastResult> _raycastResults = new();
 
     void Start()
     {
         _originPos = transform.position;
         _originRot = transform.rotation;
     }
-
 
     public void OnPointerClick(PointerEventData eventData)
     {
@@ -37,29 +41,40 @@ public class DocumentPickup : MonoBehaviour, IPointerClickHandler
     void Update()
     {
         if (!_isReading || _isAnimating) return;
-
-        // клик мимо документа
         if (Mouse.current == null) return;
         if (!Mouse.current.leftButton.wasPressedThisFrame) return;
 
+        Vector2 mousePos = Mouse.current.position.ReadValue();
 
-        if (EventSystem.current.IsPointerOverGameObject()) return;
 
-        //  попал ли клик в  коллайдер
-        Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
-        bool hitThis = Physics.Raycast(ray, out RaycastHit hit) && hit.transform == transform;
+        var pointerData = new PointerEventData(EventSystem.current) { position = mousePos };
+        _raycastResults.Clear();
+        EventSystem.current.RaycastAll(pointerData, _raycastResults);
 
-        if (!hitThis)
-            StartCoroutine(PutDown());
+
+        foreach (var hit in _raycastResults)
+        {
+            foreach (var panel in blockingPanels)
+            {
+                if (panel == null || !panel.gameObject.activeInHierarchy) continue;
+                if (hit.gameObject.transform.IsChildOf(panel) || hit.gameObject.transform == panel.transform)
+                    return;
+            }
+        }
+
+        // Не кладём если клик попал в сам документ
+        Ray ray = Camera.main.ScreenPointToRay(mousePos);
+        if (Physics.Raycast(ray, out RaycastHit physHit) && physHit.transform == transform)
+            return;
+
+        StartCoroutine(PutDown());
     }
 
     IEnumerator PickUp()
     {
         _isAnimating = true;
-        _isReading = true;
-
+        _isReading   = true;
         yield return AnimateTo(readingAnchor.position, readingAnchor.rotation);
-
         readerUI.Open(data);
         _isAnimating = false;
     }
@@ -68,16 +83,14 @@ public class DocumentPickup : MonoBehaviour, IPointerClickHandler
     {
         _isAnimating = true;
         readerUI.Close();
-
         yield return AnimateTo(_originPos, _originRot);
-
-        _isReading = false;
+        _isReading   = false;
         _isAnimating = false;
     }
 
     IEnumerator AnimateTo(Vector3 targetPos, Quaternion targetRot)
     {
-        Vector3 startPos = transform.position;
+        Vector3    startPos = transform.position;
         Quaternion startRot = transform.rotation;
 
         for (float t = 0f; t < 1f; t += Time.deltaTime / animDuration)
