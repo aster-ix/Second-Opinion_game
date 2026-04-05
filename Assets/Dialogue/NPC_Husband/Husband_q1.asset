@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7194e3310875b6b4cb3ed53c78fabaf3, type: 3}
+  m_Name: Husband_q1
+  m_EditorClassIdentifier: Assembly-CSharp::DialogObject
+  text: Yes.
+  choices:
+  - text: When did you see her last?
+    nextNode: {fileID: 11400000, guid: 7ad1bff7337662a4bab149bfe0127c59, type: 2}
+    order: 0
+    isLast: 0
+  - text: Did she look okay?
+    nextNode: {fileID: 11400000, guid: d478fc3736986b141ab2563c91c1cb78, type: 2}
+    order: 1
+    isLast: 0
+  - text: Has she had any problems lately?
+    nextNode: {fileID: 11400000, guid: 867352e0f48c1c842bc7c59833eeeaf3, type: 2}
+    order: 2
+    isLast: 0
+  isActive: 1
+  wasSelected: 0

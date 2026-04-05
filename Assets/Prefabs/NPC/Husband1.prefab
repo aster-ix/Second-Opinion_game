@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8263711623211065526}
   - component: {fileID: 8815649105058073903}
   m_Layer: 0
-  m_Name: Quad
+  m_Name: Husband1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -126,17 +126,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db8f048780be06e4a916745ff2447983, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DialogManager
-  npcId: 
-  baseDialog: {fileID: 11400000, guid: 5f877bdb24529ab418b1639b8b66f8ce, type: 2}
+  npcId: 1
+  baseDialog: {fileID: 11400000, guid: 983862ecc2e8a394bae1bd3a3bfd0bfb, type: 2}
   currentDialog: {fileID: 0}
-  choices:
-  - text: 1
-    nextNode: {fileID: 11400000, guid: 581a6a367c6609c438b31f5a42b1af35, type: 2}
-    order: 0
-  - text: 2
-    nextNode: {fileID: 11400000, guid: f025b94a70196f443ac5ff91e74e1787, type: 2}
-    order: 1
-  - text: 3
-    nextNode: {fileID: 11400000, guid: e6fdcec69015e684ea25c32020a523ce, type: 2}
-    order: 2
+  choices: []
   _history: []
