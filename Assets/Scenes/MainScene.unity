@@ -2559,7 +2559,6 @@ MonoBehaviour:
   NpcSpawn: {fileID: 539706701}
   NPCs:
   - {fileID: 1879003776922319869, guid: d1065c372f209a04ebbdd7b68aae588d, type: 3}
-  - {fileID: 1879003776922319869, guid: d1065c372f209a04ebbdd7b68aae588d, type: 3}
   NPCCount: 0
   UIManager: {fileID: 0}
   QuestionNum: 2
