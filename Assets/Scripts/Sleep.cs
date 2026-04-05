@@ -108,7 +108,7 @@ public class SleepSystem : MonoBehaviour
     {
         if (sleepHoursText != null)
         {
-            sleepHoursText.text = $"{selectedHours} ч";
+            sleepHoursText.text = $"{selectedHours} h";
         }
     }
 

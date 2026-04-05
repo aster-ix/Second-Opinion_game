@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c21ba27ede379e945b8036602a62a146, type: 3}
   m_Name: Name_pasport
   m_EditorClassIdentifier: Assembly-CSharp::DocumentData
-  npcId: Name
+  npcId: svidetel
   documentTitle: Pasport Name
   rawText: "Character [Name Name]. Date birth [1 march 1999].\n                 Woking
     as: [port]"
@@ -20,12 +20,15 @@ MonoBehaviour:
   - word: Name Name
     notebookEntry: 'his Name: Name Name'
     type: 0
-    unlocksDialogue: 0
+    targetNpcId: svidetel
+    nodeToUnlock: {fileID: 11400000, guid: 45ec92fc2ea395817862c784fd27d4ec, type: 2}
   - word: 1 march 1999
     notebookEntry: 'Birth Date: 1 march 1999'
     type: 1
-    unlocksDialogue: 0
+    targetNpcId: 
+    nodeToUnlock: {fileID: 0}
   - word: port
     notebookEntry: working in port
     type: 2
-    unlocksDialogue: 0
+    targetNpcId: 
+    nodeToUnlock: {fileID: 0}

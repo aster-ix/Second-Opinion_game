@@ -1,28 +1,38 @@
 using UnityEngine;
 using System.Collections.Generic;
-// скриптбл объет пкм - NPC - Document
-// маркировка кликабельных слов работает в виде: [имя], [дата] и тд
-[CreateAssetMenu(fileName="NewDoc", menuName="NPC/Document")]
+
+// Создать через ПКМ → NPC → Document
+// Кликабельные слова в тексте оборачивай в [скобки]: [Имя], [Дата] и т.д.
+
+[CreateAssetMenu(fileName = "NewDoc", menuName = "NPC/Document")]
 public class DocumentData : ScriptableObject
 {
-    public string npcId; // связывает с npc
-
+    public string npcId;          // к какому NPC относится документ
     public string documentTitle;
-    
-    [TextArea(5,20)]
+
+    [TextArea(5, 20)]
     public string rawText;
-    
-    // список кликабельных слов
+
     public List<SelectableWord> selectableWords = new List<SelectableWord>();
 }
 
 [System.Serializable]
 public class SelectableWord
 {
-    public string word; // точное совпадение с [текстом]
-    public string notebookEntry; // что запишется в блокнот
+    [Tooltip("Точное совпадение с текстом в [скобках]")]
+    public string word;
+
+    [Tooltip("Текст который запишется в блокнот")]
+    public string notebookEntry;
+
     public WordType type;
-    public bool unlocksDialogue;
+
+    [Header("Разблокировка диалога")]
+    [Tooltip("ID нпс у которого откроется диалог. Можно оставить пустым")]
+    public string targetNpcId;
+
+    [Tooltip("Нода диалога которая откроется после сбора улики. Можно оставить пустым")]
+    public DialogObject nodeToUnlock;
 }
 
-public enum WordType{Name, Date, Fact}
+public enum WordType { Name, Date, Fact }

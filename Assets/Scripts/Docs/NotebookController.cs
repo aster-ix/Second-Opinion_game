@@ -3,45 +3,37 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-// Синглтон. Хранит все записи плоским списком
-
+// Синглтон. Хранит все собранные улики
+//
 // API для диалогов:
-//   NotebookController.Instance.HasEntry(npcId, "Имя Жертвы")
-//   NotebookController.Instance.HasDialogueUnlock(npcId)
+//   NotebookController.Instance.HasEntry(npcId, "Текст записи")
 //   NotebookController.Instance.GetEntries(npcId)
 
 public class NotebookController : MonoBehaviour
 {
     public static NotebookController Instance { get; private set; }
 
-
     public RectTransform notebookPanel;
-    public Vector2 hiddenPos;          // позиция за экраном (правый край)
-    public Vector2 visiblePos;         // позиция когда блокнот открыт
+    public Vector2 hiddenPos;
+    public Vector2 visiblePos;
 
-
-    public RectTransform notifStrip;      // ← новый отдельный объект
+    public RectTransform notifStrip;
     public TMP_Text      newEntryLabel;
-    public Vector2       notifHiddenPos;  // за экраном
-    public Vector2       notifPeekPos;    // видимая позиция
+    public Vector2       notifHiddenPos;
+    public Vector2       notifPeekPos;
     public float         slideInTime  = 0.2f;
     public float         holdTime     = 0.5f;
     public float         slideOutTime = 0.2f;
 
-
-    public TMP_Text entriesText;       // поле где отображаются записи при открытии
-
+    public TMP_Text entriesText;
 
     public int maxEntriesPerNpc = 3;
 
-  
-    private readonly List<NotebookEntry> _entries = new();
 
-
+    private readonly List<NotebookEntry> _entries  = new();
     private readonly Queue<NotebookEntry> _animQueue = new();
+
     private bool _isNotifPlaying;
-
-
     private bool _isOpen;
     private Coroutine _panelCoroutine;
 
@@ -50,24 +42,40 @@ public class NotebookController : MonoBehaviour
     {
         if (Instance != null) { Destroy(gameObject); return; }
         Instance = this;
+
         notebookPanel.anchoredPosition = hiddenPos;
-        notifStrip.anchoredPosition = notifHiddenPos;
+        notifStrip.anchoredPosition    = notifHiddenPos;
     }
 
 
+    // Добавить улику в блокнот
+    // Возвращает true если запись добавлена, false если блокнот полон или запись уже есть.
     public bool TryAddEntry(string npcId, SelectableWord word)
     {
+        // лимит записей для этого NPC
         int count = 0;
         foreach (var e in _entries)
             if (e.npcId == npcId) count++;
 
         if (count >= maxEntriesPerNpc) return false;
+
+        // check дубликата
         if (_entries.Exists(e => e.npcId == npcId && e.text == word.notebookEntry)) return false;
 
-        var entry = new NotebookEntry(word.notebookEntry, word.type, npcId, word.unlocksDialogue);
+        // Добавляем запись
+        var entry = new NotebookEntry(word.notebookEntry, word.type, npcId);
         _entries.Add(entry);
 
+        // рзблокируем диалог если задан
+        if (word.nodeToUnlock != null && !string.IsNullOrEmpty(word.targetNpcId))
+        {
+            if (NPCDialogRegistry.Instance != null)
+                NPCDialogRegistry.Instance.UnlockNode(word.targetNpcId, word.nodeToUnlock);
+            else
+                Debug.LogWarning("[NotebookController] NPCDialogRegistry не найден на сцене.");
+        }
 
+        
         if (!_isOpen)
         {
             _animQueue.Enqueue(entry);
@@ -82,24 +90,15 @@ public class NotebookController : MonoBehaviour
         return true;
     }
 
-    // асе записи конкретного NPC
     public NotebookEntry[] GetEntries(string npcId)
     {
         return _entries.FindAll(e => e.npcId == npcId).ToArray();
     }
 
-    // проверить наличие конкретной записи — для условий диалога
     public bool HasEntry(string npcId, string entryText)
     {
         return _entries.Exists(e => e.npcId == npcId && e.text == entryText);
     }
-
-    // есть ли хоть одна запись, разблокирующая диалог у этого NPC
-    public bool HasDialogueUnlock(string npcId)
-    {
-        return _entries.Exists(e => e.npcId == npcId && e.unlocksDialogue);
-    }
-
 
 
     public void ToggleNotebook()
@@ -117,7 +116,6 @@ public class NotebookController : MonoBehaviour
             _panelCoroutine = StartCoroutine(Slide(notebookPanel, notebookPanel.anchoredPosition, hiddenPos, slideOutTime));
         }
     }
-
 
 
     void RefreshEntriesText()
@@ -141,17 +139,11 @@ public class NotebookController : MonoBehaviour
         entriesText.text = sb.ToString();
     }
 
-
     IEnumerator ProcessNotifQueue()
     {
         _isNotifPlaying = true;
-
         while (_animQueue.Count > 0)
-        {
-            var entry = _animQueue.Dequeue();
-            yield return PlayNotif(entry);
-        }
-
+            yield return PlayNotif(_animQueue.Dequeue());
         _isNotifPlaying = false;
     }
 
