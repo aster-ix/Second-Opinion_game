@@ -32,6 +32,7 @@ public class NPCManager : MonoBehaviour
         _currentNPC = npc;
         
         UIManager.dialogManager =  npc.GetComponent<DialogManager>();
+        UIManager.StartDialog();
         UIManager.ShowCurrentDialog();
         //UIManager.NextDialogButton.interactable = false;
         

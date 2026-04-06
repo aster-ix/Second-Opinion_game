@@ -5,7 +5,6 @@ using UnityEngine.EventSystems;
 public class BellClick: MonoBehaviour, IPointerClickHandler
 {
     public NPCManager npcManager;
-
     private bool _isAnimating;
     private float _cooldown = 1f;
     private float _lastClickTime = -999f;

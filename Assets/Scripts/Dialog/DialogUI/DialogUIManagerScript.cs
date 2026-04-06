@@ -11,45 +11,66 @@ public class DialogUIManagerScript : MonoBehaviour
     public GameObject buttonPrefab;
     public GameObject arrowOpen;     // иконка стрелки когда варианты скрыты  
     public GameObject arrowClose;    // иконка стрелки когда варианты открыты 
-
+    public GameObject DialogUI;
     [CanBeNull] public DialogManager dialogManager;
     public NPCManager NPCManager;
+    public GameTimeManager gameTimeManager;
     public Shiza shiza;
     public Button NextDialogButton;
 
     private List<GameObject> _buttons = new();
     private bool _choicesVisible = true;
-    public bool isOver = false;
+    public bool isOver = true;
 
     void Start()
     {
+        gameTimeManager = FindObjectOfType<GameTimeManager>();
         shiza = FindObjectOfType<Shiza>();
-        ShowCurrentDialog();
+        DialogUI.SetActive(false);   
+        dialogManager = null;        
+        isOver = true;
     }
 
 
     public void ToggleChoices()
     {
         _choicesVisible = !_choicesVisible;
-
         foreach (var btn in _buttons)
             btn.SetActive(_choicesVisible);
 
         if (arrowOpen  != null) arrowOpen.SetActive(!_choicesVisible);
         if (arrowClose != null) arrowClose.SetActive(_choicesVisible);
     }
+    public void StartDialog()
+    {
+        //dialogManager = manager;
+        isOver = false;
 
+        DialogUI.SetActive(true);
+        ShowCurrentDialog();
+    }
     public void PreviousDialog()
     {
         dialogManager?.PreviousDialog();
         ShowCurrentDialog();
     }
-
+    public void OPenIfNotOver()
+    {
+        if (!isOver && dialogManager != null)
+        {
+            DialogUI.SetActive(true);
+            
+        }
+        else
+        {
+            DialogUI.SetActive(false);
+        }
+    }
 
     public void ShowCurrentDialog()
     {
         if (dialogManager?.currentDialog == null) return;
-        isOver = false;
+        
         choiceText.text = dialogManager.currentDialog.text;
         BuildChoiceButtons();
     }
@@ -76,6 +97,7 @@ public class DialogUIManagerScript : MonoBehaviour
         if (!captured.isLast)
         {
             btn.GetComponent<Button>().onClick.AddListener(() => OnChoiceClicked(captured));
+            
         }
         else
         {
@@ -93,6 +115,7 @@ public class DialogUIManagerScript : MonoBehaviour
     {
         dialogManager.NextDialog(dialogManager.choices.IndexOf(choice));
         ShowCurrentDialog();
+        
     }
 
     public void CloseDialog()
@@ -101,9 +124,11 @@ public class DialogUIManagerScript : MonoBehaviour
         dialogManager = null;
         choiceText.text = "";
         NPCManager.DeleteNPC();
+        DialogUI.SetActive(false);
         foreach (var btn in _buttons) Destroy(btn);
         _buttons.Clear();
         isOver = true;
+        gameTimeManager.AddTime(3, 0);
         shiza.OnDialogFinished();
     }
 }
