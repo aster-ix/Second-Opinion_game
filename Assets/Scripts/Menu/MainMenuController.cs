@@ -13,6 +13,10 @@ public class MainMenuController : MonoBehaviour
     public TextMeshProUGUI typewriterText;
     public Image backgroundImage;
 
+    public AudioSource audioSource;
+    public AudioClip menuMusic;       // фоновая музыка меню (зацикленная)
+    public AudioClip typewriterSound; // звук печатания одного символа
+
     public float titleCharDelay = 0.07f;
     public float buttonStaggerDelay = 0.4f;
 
@@ -48,6 +52,13 @@ public class MainMenuController : MonoBehaviour
         startButton.onClick.AddListener(OnStartClicked);
         exitButton.onClick.AddListener(OnExitClicked);
 
+        if (audioSource != null && menuMusic != null)
+        {
+            audioSource.clip = menuMusic;
+            audioSource.loop = true;
+            audioSource.Play();
+        }
+
         StartCoroutine(MenuIntro());
     }
 
@@ -55,7 +66,6 @@ public class MainMenuController : MonoBehaviour
     {
         yield return new WaitForSeconds(0.3f);
 
-        // тайтл посимвольно
         int total = titleText.text.Length;
         for (int i = 0; i <= total; i++)
         {
@@ -65,7 +75,6 @@ public class MainMenuController : MonoBehaviour
 
         yield return new WaitForSeconds(0.2f);
 
-        // кнопки по очереди без анимации
         startButton.gameObject.SetActive(true);
         yield return new WaitForSeconds(buttonStaggerDelay);
         exitButton.gameObject.SetActive(true);
@@ -89,7 +98,9 @@ public class MainMenuController : MonoBehaviour
 
     IEnumerator TypewriterSequence()
     {
-        // всё меню скрываем мгновенно
+        if (audioSource != null)
+            audioSource.Stop();
+
         titleText.gameObject.SetActive(false);
         startButton.gameObject.SetActive(false);
         exitButton.gameObject.SetActive(false);
@@ -104,12 +115,13 @@ public class MainMenuController : MonoBehaviour
             yield return new WaitForSeconds(linePause);
 
             if (i < phrases.Count - 1)
-            {
                 typewriterText.text = "";
-            }
         }
 
         yield return new WaitForSeconds(finalPause);
+
+        if (audioSource != null)
+            audioSource.Stop();
 
         typewriterText.gameObject.SetActive(false);
 
@@ -123,17 +135,32 @@ public class MainMenuController : MonoBehaviour
     IEnumerator TypeLine(string line)
     {
         typewriterText.text = "";
+
+        if (audioSource != null && typewriterSound != null)
+        {
+            audioSource.clip = typewriterSound;
+            audioSource.loop = true;
+            audioSource.Play();
+        }
+
         foreach (char ch in line)
         {
             typewriterText.text += ch;
             yield return new WaitForSeconds(charDelay);
         }
+
+        // пауза между фразами 
+        if (audioSource != null)
+            audioSource.Stop();
     }
 
     IEnumerator QuitSequence()
     {
         startButton.interactable = false;
         exitButton.interactable = false;
+
+        if (audioSource != null)
+            audioSource.Stop();
 
         titleText.gameObject.SetActive(false);
         startButton.gameObject.SetActive(false);
