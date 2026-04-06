@@ -25,6 +25,10 @@ public class DialogUIManagerScript : MonoBehaviour
     
     [SerializeField]
     private float _textSpeed = 0.5f;
+    
+    public FinalScript finalScript;
+    
+    public DialogObject finalDialog;
 
     private  Coroutine typingCoroutine;
     void Start()
@@ -106,6 +110,10 @@ public class DialogUIManagerScript : MonoBehaviour
 
     public void CloseDialog()
     {
+        if (dialogManager.currentDialog == finalDialog)
+        {
+            finalScript.StartEnd();
+        }
         //NextDialogButton.interactable = true;
         dialogManager = null;
         choiceText.text = "";

@@ -19,7 +19,7 @@ MonoBehaviour:
     order: 0
     isLast: 0
   - text: Did you hear anything before that?
-    nextNode: {fileID: 11400000, guid: a7e82edd5872ba24c842f088e3fa6edb, type: 2}
+    nextNode: {fileID: 11400000, guid: 32a4d245bc2dd39408defe34a20e0115, type: 2}
     order: 1
     isLast: 0
   - text: Did you see the person clearly?
