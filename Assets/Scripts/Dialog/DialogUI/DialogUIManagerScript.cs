@@ -95,8 +95,9 @@ public class DialogUIManagerScript : MonoBehaviour
 
     public void CloseDialog()
     {
-        NextDialogButton.interactable = true;
+        //NextDialogButton.interactable = true;
         dialogManager = null;
+        choiceText.text = "";
         NPCManager.DeleteNPC();
         foreach (var btn in _buttons) Destroy(btn);
         _buttons.Clear();

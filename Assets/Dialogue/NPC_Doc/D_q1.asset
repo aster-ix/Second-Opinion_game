@@ -10,21 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7194e3310875b6b4cb3ed53c78fabaf3, type: 3}
-  m_Name: Husband_q1
+  m_Name: D_q1
   m_EditorClassIdentifier: Assembly-CSharp::DialogObject
-  text: Yeah... I still can't believe it happened.
+  text: I could ask you the same thing, Jekyll.
   choices:
-  - text: When did you see her last?
-    nextNode: {fileID: 11400000, guid: 7ad1bff7337662a4bab149bfe0127c59, type: 2}
+  - text: You came to see me.
+    nextNode: {fileID: 11400000, guid: 9585b0c8775e1764cab38a0bc9c65413, type: 2}
     order: 0
     isLast: 0
-  - text: Did she look okay?
-    nextNode: {fileID: 11400000, guid: d478fc3736986b141ab2563c91c1cb78, type: 2}
+  - text: Did something happen?
+    nextNode: {fileID: 11400000, guid: f6bfe6e2548d89f47adba6912bae20d9, type: 2}
     order: 1
     isLast: 0
-  - text: Has she had any problems lately?
-    nextNode: {fileID: 11400000, guid: 867352e0f48c1c842bc7c59833eeeaf3, type: 2}
-    order: 2
-    isLast: 0
   isActive: 1
-  wasSelected: 1
+  wasSelected: 0
