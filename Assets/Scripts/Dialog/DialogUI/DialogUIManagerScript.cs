@@ -32,6 +32,7 @@ public class DialogUIManagerScript : MonoBehaviour
     public DialogObject finalDialog;
 
     private Coroutine typingCoroutine;
+
     void Start()
     {
         gameTimeManager = FindObjectOfType<GameTimeManager>();
@@ -57,7 +58,6 @@ public class DialogUIManagerScript : MonoBehaviour
         dialogManager?.PreviousDialog();
         ShowCurrentDialog();
     }
-
 
     public void ShowCurrentDialog()
     {
@@ -108,6 +108,7 @@ public class DialogUIManagerScript : MonoBehaviour
         if (typingCoroutine != null) StopCoroutine(typingCoroutine);
         dialogManager.NextDialog(dialogManager.choices.IndexOf(choice));
         ShowCurrentDialog();
+
     }
 
     public void CloseDialog()

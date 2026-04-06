@@ -101,7 +101,6 @@ public class ShizaMonologue : MonoBehaviour
     }
 
 
-
     void EndMonologue()
     {
         isPlaying = false;
@@ -113,6 +112,7 @@ public class ShizaMonologue : MonoBehaviour
     IEnumerator HidePanel()
     {
         yield return new WaitForSeconds(1.5f);
+
 
         if (dialoguePanel != null)
             dialoguePanel.SetActive(false);
