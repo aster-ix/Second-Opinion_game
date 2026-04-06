@@ -38,8 +38,9 @@ public class NPCManager : MonoBehaviour
 
         var npc = Instantiate(NPCs[NPCCount], NpcSpawn.transform);
         _currentNPC = npc;
-
-        UIManager.dialogManager = npc.GetComponent<DialogManager>();
+        
+        UIManager.dialogManager =  npc.GetComponent<DialogManager>();
+        UIManager.StartDialog();
         UIManager.ShowCurrentDialog();
 
         if (caseDocument != null && NPCCount < NPCDocuments.Count && NPCDocuments[NPCCount] != null)
