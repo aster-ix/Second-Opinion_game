@@ -15,6 +15,7 @@ public class DialogUIManagerScript : MonoBehaviour
 
     [CanBeNull] public DialogManager dialogManager;
     public NPCManager NPCManager;
+    public Shiza shiza;
     public Button NextDialogButton;
 
     private List<GameObject> _buttons = new();
@@ -28,6 +29,7 @@ public class DialogUIManagerScript : MonoBehaviour
     private  Coroutine typingCoroutine;
     void Start()
     {
+        shiza = FindObjectOfType<Shiza>();
         ShowCurrentDialog();
     }
 
@@ -111,6 +113,7 @@ public class DialogUIManagerScript : MonoBehaviour
         foreach (var btn in _buttons) Destroy(btn);
         _buttons.Clear();
         isOver = true;
+        shiza.OnDialogFinished();
     }
     IEnumerator TypeText(string text)
     {
