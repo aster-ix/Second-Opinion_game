@@ -13,9 +13,8 @@ public class MainMenuController : MonoBehaviour
     public TextMeshProUGUI typewriterText;
     public Image backgroundImage;
 
-    public float titleFadeDuration = 1.8f;
-    public float buttonFadeDuration = 0.9f;
-    public float buttonStaggerDelay = 0.25f;
+    public float titleCharDelay = 0.07f;
+    public float buttonStaggerDelay = 0.4f;
 
     public float charDelay = 0.045f;
     public float linePause = 1.2f;
@@ -23,36 +22,24 @@ public class MainMenuController : MonoBehaviour
 
     public string mainSceneName = "MainScene";
 
-    private CanvasGroup titleG;
-    private CanvasGroup startG;
-    private CanvasGroup exitG;
-    private CanvasGroup typewriterG;
-
     private bool isRunning = false;
 
     private readonly List<string> phrases = new List<string>
     {
         "A body was found at 3:47 AM in the flat on the 5th floor.",
-        "You have been assigned to investigate the case and find out who the killer is.",
+        "You have been assigned to investigate the case.",
         "Find who the killer is, and bring them to justice.",
         "Good luck, detective."
     };
 
     void Awake()
     {
-        titleG      = GetOrAddCG(titleText.gameObject);
-        startG      = GetOrAddCG(startButton.gameObject);
-        exitG       = GetOrAddCG(exitButton.gameObject);
-        typewriterG = GetOrAddCG(typewriterText.gameObject);
+        titleText.maxVisibleCharacters = 0;
 
-        titleG.alpha      = 0f;
-        startG.alpha      = 0f;
-        exitG.alpha       = 0f;
-        typewriterG.alpha = 0f;
+        startButton.gameObject.SetActive(false);
+        exitButton.gameObject.SetActive(false);
 
-        SetInteractable(startG, false);
-        SetInteractable(exitG, false);
-
+        typewriterText.gameObject.SetActive(false);
         typewriterText.text = "";
     }
 
@@ -68,16 +55,20 @@ public class MainMenuController : MonoBehaviour
     {
         yield return new WaitForSeconds(0.3f);
 
-        yield return StartCoroutine(Fade(titleG, 0f, 1f, titleFadeDuration));
+        // тайтл посимвольно
+        int total = titleText.text.Length;
+        for (int i = 0; i <= total; i++)
+        {
+            titleText.maxVisibleCharacters = i;
+            yield return new WaitForSeconds(titleCharDelay);
+        }
 
-        yield return new WaitForSeconds(0.15f);
+        yield return new WaitForSeconds(0.2f);
 
-        StartCoroutine(Fade(startG, 0f, 1f, buttonFadeDuration));
+        // кнопки по очереди без анимации
+        startButton.gameObject.SetActive(true);
         yield return new WaitForSeconds(buttonStaggerDelay);
-        yield return StartCoroutine(Fade(exitG, 0f, 1f, buttonFadeDuration));
-
-        SetInteractable(startG, true);
-        SetInteractable(exitG, true);
+        exitButton.gameObject.SetActive(true);
     }
 
     void OnStartClicked()
@@ -85,8 +76,8 @@ public class MainMenuController : MonoBehaviour
         if (isRunning) return;
         isRunning = true;
 
-        SetInteractable(startG, false);
-        SetInteractable(exitG, false);
+        startButton.interactable = false;
+        exitButton.interactable = false;
 
         StartCoroutine(TypewriterSequence());
     }
@@ -98,14 +89,14 @@ public class MainMenuController : MonoBehaviour
 
     IEnumerator TypewriterSequence()
     {
-        float fadeOut = 0.5f;
-        StartCoroutine(Fade(titleG, 1f, 0f, fadeOut));
-        StartCoroutine(Fade(startG, 1f, 0f, fadeOut));
-        yield return StartCoroutine(Fade(exitG, 1f, 0f, fadeOut));
+        // всё меню скрываем мгновенно
+        titleText.gameObject.SetActive(false);
+        startButton.gameObject.SetActive(false);
+        exitButton.gameObject.SetActive(false);
 
         yield return new WaitForSeconds(0.5f);
 
-        yield return StartCoroutine(Fade(typewriterG, 0f, 1f, 0.4f));
+        typewriterText.gameObject.SetActive(true);
 
         for (int i = 0; i < phrases.Count; i++)
         {
@@ -113,11 +104,14 @@ public class MainMenuController : MonoBehaviour
             yield return new WaitForSeconds(linePause);
 
             if (i < phrases.Count - 1)
-                yield return StartCoroutine(FadeTMPAlpha(typewriterText, 1f, 0f, 0.35f));
+            {
+                typewriterText.text = "";
+            }
         }
 
         yield return new WaitForSeconds(finalPause);
-        yield return StartCoroutine(FadeTMPAlpha(typewriterText, 1f, 0f, 0.6f));
+
+        typewriterText.gameObject.SetActive(false);
 
         if (backgroundImage != null)
             yield return StartCoroutine(FadeImageToBlack(backgroundImage, 0.5f));
@@ -128,11 +122,7 @@ public class MainMenuController : MonoBehaviour
 
     IEnumerator TypeLine(string line)
     {
-        UnityEngine.Color c = typewriterText.color;
-        c.a = 1f;
-        typewriterText.color = c;
         typewriterText.text = "";
-
         foreach (char ch in line)
         {
             typewriterText.text += ch;
@@ -142,13 +132,12 @@ public class MainMenuController : MonoBehaviour
 
     IEnumerator QuitSequence()
     {
-        SetInteractable(startG, false);
-        SetInteractable(exitG, false);
+        startButton.interactable = false;
+        exitButton.interactable = false;
 
-        float d = 0.4f;
-        StartCoroutine(Fade(titleG, 1f, 0f, d));
-        StartCoroutine(Fade(startG, 1f, 0f, d));
-        yield return StartCoroutine(Fade(exitG, 1f, 0f, d));
+        titleText.gameObject.SetActive(false);
+        startButton.gameObject.SetActive(false);
+        exitButton.gameObject.SetActive(false);
 
         yield return new WaitForSeconds(0.1f);
 
@@ -157,37 +146,6 @@ public class MainMenuController : MonoBehaviour
 #else
         Application.Quit();
 #endif
-    }
-
-    IEnumerator Fade(CanvasGroup cg, float from, float to, float duration)
-    {
-        float t = 0f;
-        cg.alpha = from;
-        while (t < duration)
-        {
-            t += Time.deltaTime;
-            cg.alpha = Mathf.Lerp(from, to, Mathf.SmoothStep(0f, 1f, t / duration));
-            yield return null;
-        }
-        cg.alpha = to;
-    }
-
-    IEnumerator FadeTMPAlpha(TextMeshProUGUI tmp, float from, float to, float duration)
-    {
-        float t = 0f;
-        UnityEngine.Color c = tmp.color;
-        c.a = from;
-        tmp.color = c;
-
-        while (t < duration)
-        {
-            t += Time.deltaTime;
-            c.a = Mathf.Lerp(from, to, Mathf.SmoothStep(0f, 1f, t / duration));
-            tmp.color = c;
-            yield return null;
-        }
-        c.a = to;
-        tmp.color = c;
     }
 
     IEnumerator FadeImageToBlack(Image img, float duration)
@@ -204,17 +162,5 @@ public class MainMenuController : MonoBehaviour
             yield return null;
         }
         img.color = target;
-    }
-
-    void SetInteractable(CanvasGroup cg, bool value)
-    {
-        cg.interactable   = value;
-        cg.blocksRaycasts = value;
-    }
-
-    CanvasGroup GetOrAddCG(GameObject obj)
-    {
-        CanvasGroup cg = obj.GetComponent<CanvasGroup>();
-        return cg != null ? cg : obj.AddComponent<CanvasGroup>();
     }
 }
