@@ -1,7 +1,7 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-
+using System.Collections;
 public class SleepSystem : MonoBehaviour
 {
     [Header("UI Компоненты")]
@@ -11,11 +11,13 @@ public class SleepSystem : MonoBehaviour
     [SerializeField] private Button cancelButton;
     [SerializeField] private Button addHourButton;
     [SerializeField] private Button removeHourButton;
-
+    [SerializeField] private float textSpeed = 0.05f;
+    public TextMeshProUGUI Text;
+    public GameObject image;
     [Header("Настройки сна")]
     [SerializeField] private int minSleepHours = 1;
     [SerializeField] private int maxSleepHours = 12;
-
+    private Coroutine currentTyping;
     private NPCManager nPCManager;
     private GameTimeManager GameTimeManager;
     private SanitySystem sanitySystem;
@@ -26,6 +28,7 @@ public class SleepSystem : MonoBehaviour
 
     void Start()
     {
+        image.SetActive(false);
         nPCManager = FindObjectOfType<NPCManager>();
         GameTimeManager = FindObjectOfType<GameTimeManager>();
         pills = FindObjectOfType<Pills>();
@@ -46,8 +49,33 @@ public class SleepSystem : MonoBehaviour
 
         UpdateSleepTimeDisplay();
     }
-    
 
+    public void Visualize(string text)
+    {
+        image.SetActive(true);
+
+        if (currentTyping != null)
+            StopCoroutine(currentTyping);
+
+        currentTyping = StartCoroutine(TypeText(text));
+    }
+
+    IEnumerator TypeText(string text)
+    {
+        Text.text = "";
+
+        foreach (char c in text)
+        {
+            Text.text += c;
+            yield return new WaitForSeconds(textSpeed);
+        }
+
+
+        yield return new WaitForSeconds(3f);
+
+
+        image.SetActive(false);
+    }
     public void OpenSleepPanel()
     {
         
@@ -160,7 +188,7 @@ public class SleepSystem : MonoBehaviour
             sleepButton.enabled = false;
 
             float remaining = blockEndTime - currentTime;
-            Debug.Log($"Вы не можете спать еще {remaining:F1} часов");
+            Visualize($"I dont want to sleep now");
         }
         else
         {
