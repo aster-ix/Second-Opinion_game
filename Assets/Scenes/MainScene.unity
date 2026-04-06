@@ -4745,6 +4745,7 @@ MonoBehaviour:
   _textSpeed: 0.1
   finalScript: {fileID: 1374359856}
   finalDialog: {fileID: 11400000, guid: 16d17bdce399db14c9eefbf504813d9d, type: 2}
+  engingDialog: {fileID: 11400000, guid: ac1db12abe41e9d4d9970a6c98938909, type: 2}
 --- !u!1 &1064711924
 GameObject:
   m_ObjectHideFlags: 0
@@ -6138,6 +6139,8 @@ MonoBehaviour:
   finalchoice: {fileID: 243432056}
   Hud: {fileID: 1676484260}
   npcManager: {fileID: 539706700}
+  Scene1: 0
+  Scene2: 0
 --- !u!4 &1374359857
 Transform:
   m_ObjectHideFlags: 0

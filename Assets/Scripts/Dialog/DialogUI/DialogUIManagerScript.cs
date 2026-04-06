@@ -30,6 +30,7 @@ public class DialogUIManagerScript : MonoBehaviour
     public FinalScript finalScript;
     
     public DialogObject finalDialog;
+    public DialogObject engingDialog;
 
     private  Coroutine typingCoroutine;
     void Start()
@@ -136,6 +137,12 @@ public class DialogUIManagerScript : MonoBehaviour
         if (dialogManager.currentDialog == finalDialog)
         {
             finalScript.StartEnd();
+        }
+
+        if (dialogManager.currentDialog == engingDialog)
+        {
+            finalScript.LoadEnding2();
+            return;
         }
         //NextDialogButton.interactable = true;
         dialogManager = null;
