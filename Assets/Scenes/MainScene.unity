@@ -6139,8 +6139,8 @@ MonoBehaviour:
   finalchoice: {fileID: 243432056}
   Hud: {fileID: 1676484260}
   npcManager: {fileID: 539706700}
-  Scene1: 0
-  Scene2: 0
+  Scene1: 2
+  Scene2: 3
 --- !u!4 &1374359857
 Transform:
   m_ObjectHideFlags: 0
