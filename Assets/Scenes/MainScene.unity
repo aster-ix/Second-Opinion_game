@@ -1772,7 +1772,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 309672725}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4346,12 +4346,12 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1243876505}
-  - {fileID: 309672726}
-  - {fileID: 1252793428}
   - {fileID: 2006677164}
   - {fileID: 1348883821}
   - {fileID: 1144704741}
   - {fileID: 1331103905}
+  - {fileID: 309672726}
+  - {fileID: 1252793428}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -7176,7 +7176,7 @@ MonoBehaviour:
   notifStrip: {fileID: 1252793428}
   newEntryLabel: {fileID: 471617800}
   notifHiddenPos: {x: 1470, y: 0}
-  notifPeekPos: {x: 700, y: 0}
+  notifPeekPos: {x: 630, y: 0}
   slideInTime: 0.2
   holdTime: 0.5
   slideOutTime: 0.2
