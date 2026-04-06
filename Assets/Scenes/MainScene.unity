@@ -3349,7 +3349,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &727391827
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4757,8 +4757,7 @@ MonoBehaviour:
   buttonPrefab: {fileID: 7455850355439968140, guid: 308fc71b7b59ff146a459ff142f1c0e7, type: 3}
   arrowOpen: {fileID: 0}
   arrowClose: {fileID: 0}
-  DialogUI: {fileID: 2006677163}
-  dialogManager: {fileID: 1413684294}
+  dialogManager: {fileID: 0}
   NPCManager: {fileID: 539706700}
   gameTimeManager: {fileID: 0}
   shiza: {fileID: 0}
