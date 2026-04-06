@@ -2637,6 +2637,10 @@ MonoBehaviour:
   UIManager: {fileID: 1033887533}
   QuestionNum: 2
   CurrentQuestionNum: 0
+  NPCDocuments:
+  - {fileID: 11400000, guid: 830c50187fdbcef42ab470ceeb51e0ea, type: 2}
+  - {fileID: 11400000, guid: a13326c430acfcf80ab6ff536bd4c9b0, type: 2}
+  caseDocument: {fileID: 5310276389441346459}
   _currentNPC: {fileID: 0}
 --- !u!4 &539706701
 Transform:
