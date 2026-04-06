@@ -14,5 +14,40 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DocumentData
   npcId: 
   documentTitle: 
-  rawText: 
+  rawText: 'Name: Jekyll Hide
+
+    Age: 35
+
+    
+
+    Occupation: Detective
+
+    
+
+    Medical
+    Status: Under psychiatric supervision.
+
+    
+
+    Diagnosis:
+
+    Severe dissociative
+    symptoms.
+
+    Memory lapses.
+
+    Distorted perception.
+
+    
+
+    Observed
+    Effects:
+
+    loss of time
+
+    impaired judgment
+
+    hallucinations
+
+'
   selectableWords: []

@@ -1,8 +1,58 @@
 {
-  "lines": [
-    "Hey...",
-    "He is strage, isn't he?",
-    "I think he hides something...",
-    "Do your work"
+  "monologues": [
+    {
+      "lines": [
+        "Hey...",
+        "He is strange, isn't he?",
+        "I think he hides something...",
+        "Do your work"
+      ]
+    },
+    {
+      "lines": [
+        "Hey...",
+        "Do you already know who is the killer?",
+        "Hmmm",
+        "You going to find him soon"
+      ]
+    },
+    {
+      "lines": [
+        "Hey...",
+        "I think he is innocent",
+        "You are digging the wrong way",
+        "Do your work"
+      ]
+    },
+    {
+      "lines": [
+        "Hey...",
+        "Are you feeling alright?",
+        "You look bad"
+      ]
+    },
+    {
+      "lines": [
+        "Hey...",
+        "Are you even a detective?",
+        "Why didn't you find the killer yet?",
+        "Work harder!"
+      ]
+    },
+    {
+      "lines": [
+        "Hey...",
+        "This clown in the city...",
+        "Pff. He is funny",
+        "Keep your eyes on him"
+      ]
+    },
+    {
+      "lines": [
+        "Hey...",
+        "I know I scared you",
+        "But you don't need to be scared"
+      ]
+    }
   ]
 }

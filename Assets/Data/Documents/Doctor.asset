@@ -14,5 +14,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DocumentData
   npcId: 
   documentTitle: 
-  rawText: 
+  rawText: 'Name: [Dr. Adrian Clarke]
+
+    Age: [56]
+
+    Relation to Victim: [None
+    confirmed]
+
+    Occupation: [Psychiatrist]
+
+    Relation to Investigator: [Attending
+    physician]
+
+    Medical Practice: [Specializes in neurological and psychiatric
+    disorders. Prescribes strong medication affecting memory and perception.]
+
+    Behavior:
+
+    [Calm
+    and composed.]
+
+    [Avoids direct answers under pressure.]
+
+    [Appears to
+    withhold information.]
+
+'
   selectableWords: []

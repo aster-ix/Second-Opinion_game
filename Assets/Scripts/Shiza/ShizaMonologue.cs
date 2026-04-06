@@ -13,7 +13,7 @@ public class ShizaMonologue : MonoBehaviour
     [Header("Настройки")]
     [SerializeField] private float textSpeed = 0.05f;
     [SerializeField] private string jsonFileName = "Monologue";
-    [SerializeField] private Button clickZone;
+    [SerializeField] private float delayBetweenLines = 2f;
     private List<string> lines = new List<string>();
     private Shiza shiza;
     private int currentLineIndex = 0;
@@ -27,28 +27,10 @@ public class ShizaMonologue : MonoBehaviour
         LoadLines();
         if (dialoguePanel != null)
             dialoguePanel.SetActive(false);
-        SetupClickHandler();
+        
     }
-    void SetupClickHandler()
-    {
-        if (clickZone != null)
-        {
-            clickZone.onClick.AddListener(OnClickHandler);
-        }
-    }
-    void OnClickHandler()
-    {
-        if (!isPlaying) return;
 
-        if (isTyping)
-        {
-            StopTypingAndShowFullText();
-        }
-        else
-        {
-            NextLine();
-        }
-    }
+
 
     void LoadLines()
     {
@@ -57,24 +39,29 @@ public class ShizaMonologue : MonoBehaviour
         if (jsonFile != null)
         {
             Wrapper wrapper = JsonUtility.FromJson<Wrapper>(jsonFile.text);
-            lines = wrapper.lines;
+
+            int randomIndex = Random.Range(0, wrapper.monologues.Count);
+
+            lines = wrapper.monologues[randomIndex].lines;
         }
-        else
-        {
-            return;
-        }
+    }
+
+    [System.Serializable]
+    private class Monologue
+    {
+        public List<string> lines;
     }
 
     [System.Serializable]
     private class Wrapper
     {
-        public List<string> lines;
+        public List<Monologue> monologues;
     }
 
     public void StartMonologue()
     {
         if (isPlaying) return;
-
+        LoadLines();
         currentLineIndex = 0;
         isPlaying = true;
 
@@ -104,45 +91,42 @@ public class ShizaMonologue : MonoBehaviour
         isTyping = true;
         textField.text = "";
 
-        foreach (char c in text.ToCharArray())
+        foreach (char c in text)
         {
             textField.text += c;
             yield return new WaitForSeconds(textSpeed);
         }
 
         isTyping = false;
-    }
 
-    void StopTypingAndShowFullText()
-    {
-        if (typingCoroutine != null)
-        {
-            StopCoroutine(typingCoroutine);
-            typingCoroutine = null;
-        }
+        yield return new WaitForSeconds(delayBetweenLines);
 
-        textField.text = lines[currentLineIndex];
-        isTyping = false;
-    }
-
-    void NextLine()
-    {
         currentLineIndex++;
         ShowCurrentLine();
     }
+
 
     void EndMonologue()
     {
         isPlaying = false;
         isTyping = false;
 
+        StartCoroutine(HidePanel());
+    }
+
+    IEnumerator HidePanel()
+    {
+        yield return new WaitForSeconds(1.5f);
+
+
         if (dialoguePanel != null)
             dialoguePanel.SetActive(false);
 
         textField.text = "";
+
         if (shiza != null)
         {
-            shiza.DestroyCurrentShiza(); 
+            shiza.DestroyCurrentShiza();
         }
     }
 

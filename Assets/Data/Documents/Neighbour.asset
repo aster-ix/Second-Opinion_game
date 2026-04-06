@@ -14,5 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DocumentData
   npcId: 
   documentTitle: 
-  rawText: 
+  rawText: 'Name: [Daniel Krane]
+
+    Age: [48]
+
+    Relation to Victim: [Lived
+    next door]
+
+    Occupation: [Unemployed]
+
+    Medical History: [Lives alone.
+    Limited social interaction. Known to observe surroundings from his window for
+    extended periods.]
+
+    Witness Account: [Observed an unidentified individual
+    near the house after the victim exited.] '
   selectableWords: []

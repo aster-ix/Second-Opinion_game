@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c21ba27ede379e945b8036602a62a146, type: 3}
   m_Name: Crazy
   m_EditorClassIdentifier: Assembly-CSharp::DocumentData
-  npcId: 
-  documentTitle: 
-  rawText: 
+  npcId: 3
+  documentTitle: ???
+  rawText: '?'
   selectableWords: []
