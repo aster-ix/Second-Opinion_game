@@ -29,8 +29,8 @@ public class ShizaMonologue : MonoBehaviour
             dialoguePanel.SetActive(false);
         
     }
-    
-    
+
+
 
     void LoadLines()
     {
@@ -39,24 +39,29 @@ public class ShizaMonologue : MonoBehaviour
         if (jsonFile != null)
         {
             Wrapper wrapper = JsonUtility.FromJson<Wrapper>(jsonFile.text);
-            lines = wrapper.lines;
+
+            int randomIndex = Random.Range(0, wrapper.monologues.Count);
+
+            lines = wrapper.monologues[randomIndex].lines;
         }
-        else
-        {
-            return;
-        }
+    }
+
+    [System.Serializable]
+    private class Monologue
+    {
+        public List<string> lines;
     }
 
     [System.Serializable]
     private class Wrapper
     {
-        public List<string> lines;
+        public List<Monologue> monologues;
     }
 
     public void StartMonologue()
     {
         if (isPlaying) return;
-
+        LoadLines();
         currentLineIndex = 0;
         isPlaying = true;
 
