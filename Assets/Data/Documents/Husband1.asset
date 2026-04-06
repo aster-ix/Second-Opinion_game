@@ -1,0 +1,77 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c21ba27ede379e945b8036602a62a146, type: 3}
+  m_Name: Husband1
+  m_EditorClassIdentifier: Assembly-CSharp::DocumentData
+  npcId: Jonathan Hale
+  documentTitle: J.H. identity
+  rawText: 'Name: [Jonathan Hale]
+
+    Age: [38]
+
+    Relation to Victim: [Husband]
+
+    Occupation:
+    [Office worker (accounting)]
+
+    Medical History: [Previously prescribed psychiatric
+    medication. Discontinued treatment voluntarily.]
+
+    Notes:
+
+    [emotional
+    instability]
+
+    [detachment]
+
+    [memory disturbances]'
+  selectableWords:
+  - word: Jonathan Hale
+    notebookEntry: 'name: Jonathan Hale'
+    type: 0
+    targetNpcId: 
+    nodeToUnlock: {fileID: 0}
+  - word: 38
+    notebookEntry: 'age: 38'
+    type: 2
+    targetNpcId: 
+    nodeToUnlock: {fileID: 0}
+  - word: Husband
+    notebookEntry: he was victim's husband
+    type: 2
+    targetNpcId: 
+    nodeToUnlock: {fileID: 0}
+  - word: Office worker (accounting)
+    notebookEntry: working as office worker
+    type: 2
+    targetNpcId: 
+    nodeToUnlock: {fileID: 0}
+  - word: Previously prescribed psychiatric medication. Discontinued treatment voluntarily
+    notebookEntry: Can have some agression issues
+    type: 2
+    targetNpcId: 
+    nodeToUnlock: {fileID: 0}
+  - word: emotional instability
+    notebookEntry: emotional instability
+    type: 2
+    targetNpcId: 
+    nodeToUnlock: {fileID: 0}
+  - word: memory disturbances
+    notebookEntry: memory disturbances
+    type: 2
+    targetNpcId: 
+    nodeToUnlock: {fileID: 0}
+  - word: detachment
+    notebookEntry: detachment
+    type: 2
+    targetNpcId: 
+    nodeToUnlock: {fileID: 0}
