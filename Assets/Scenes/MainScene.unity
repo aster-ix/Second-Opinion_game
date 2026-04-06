@@ -2010,6 +2010,7 @@ Transform:
   - {fileID: 1182382513}
   - {fileID: 1124224587}
   - {fileID: 673151085}
+  - {fileID: 5063400686236689132}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &418948084
@@ -2535,7 +2536,6 @@ MonoBehaviour:
   UIManager: {fileID: 1033887533}
   QuestionNum: 2
   CurrentQuestionNum: 0
-  animator: {fileID: 8320192490282748680}
   _currentNPC: {fileID: 0}
 --- !u!4 &539706701
 Transform:
@@ -4216,7 +4216,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e67d6c9c833219f408cf502f15f6ec53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShizaMonologue
-  textField: {fileID: 0}
+  textField: {fileID: 418948086}
   dialoguePanel: {fileID: 1144704740}
   textSpeed: 0.05
   jsonFileName: Monologue
@@ -9024,14 +9024,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5552657639741798486}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.379907, y: 1.471, z: -0.045}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.8275032, y: 0.97099996, z: 3.38567}
   m_LocalScale: {x: 0.08, y: 0.08, z: 0.08}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2158593043410788150}
   - {fileID: 3892605745947579361}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 408311534}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &5103540446952753625
 MeshRenderer:
@@ -9213,6 +9213,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BellClick
   npcManager: {fileID: 539706700}
+  animator: {fileID: 8320192490282748680}
 --- !u!136 &5552657639741798488
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -10133,4 +10134,3 @@ SceneRoots:
   - {fileID: 1570353812}
   - {fileID: 1033887532}
   - {fileID: 1233086418}
-  - {fileID: 5063400686236689132}
