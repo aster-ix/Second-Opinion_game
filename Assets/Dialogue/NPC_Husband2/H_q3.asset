@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7194e3310875b6b4cb3ed53c78fabaf3, type: 3}
+  m_Name: H_q3
+  m_EditorClassIdentifier: Assembly-CSharp::DialogObject
+  text: Nothing that matters now.
+  choices:
+  - text: It matters. She's dead.
+    nextNode: {fileID: 11400000, guid: a3d6e631e4990b9499c2439ba13b0e6b, type: 2}
+    order: 0
+    isLast: 0
+  isActive: 1
+  wasSelected: 0

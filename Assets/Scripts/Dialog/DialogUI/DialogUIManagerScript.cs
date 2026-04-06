@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using TMPro;
@@ -19,7 +20,12 @@ public class DialogUIManagerScript : MonoBehaviour
     private List<GameObject> _buttons = new();
     private bool _choicesVisible = true;
     public bool isOver = false;
+    private  bool isTyping = false;
+    
+    [SerializeField]
+    private float _textSpeed = 0.5f;
 
+    private  Coroutine typingCoroutine;
     void Start()
     {
         ShowCurrentDialog();
@@ -39,6 +45,7 @@ public class DialogUIManagerScript : MonoBehaviour
 
     public void PreviousDialog()
     {
+        if (typingCoroutine != null) StopCoroutine(typingCoroutine);
         dialogManager?.PreviousDialog();
         ShowCurrentDialog();
     }
@@ -48,7 +55,8 @@ public class DialogUIManagerScript : MonoBehaviour
     {
         if (dialogManager?.currentDialog == null) return;
         isOver = false;
-        choiceText.text = dialogManager.currentDialog.text;
+        //choiceText.text = dialogManager.currentDialog.text;
+        typingCoroutine = StartCoroutine(TypeText(dialogManager.currentDialog.text));
         BuildChoiceButtons();
     }
 
@@ -89,6 +97,7 @@ public class DialogUIManagerScript : MonoBehaviour
 
     void OnChoiceClicked(Choice choice)
     {
+        if (typingCoroutine != null) StopCoroutine(typingCoroutine);
         dialogManager.NextDialog(dialogManager.choices.IndexOf(choice));
         ShowCurrentDialog();
     }
@@ -102,5 +111,18 @@ public class DialogUIManagerScript : MonoBehaviour
         foreach (var btn in _buttons) Destroy(btn);
         _buttons.Clear();
         isOver = true;
+    }
+    IEnumerator TypeText(string text)
+    {
+        isTyping = true;
+        choiceText.text = "";
+
+        foreach (char c in text.ToCharArray())
+        {
+            choiceText.text += c;
+            yield return new WaitForSeconds(_textSpeed);
+        }
+
+        isTyping = false;
     }
 }
