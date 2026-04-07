@@ -13,21 +13,21 @@ MonoBehaviour:
   m_Name: Fantom
   m_EditorClassIdentifier: Assembly-CSharp::DocumentData
   npcId: 
-  documentTitle: 
+  documentTitle: Me???
   rawText: 'Name: Jekyll Hide
 
     Age: 35
 
-    
+
 
     Occupation: Detective
 
-    
+
 
     Medical
     Status: Under psychiatric supervision.
 
-    
+
 
     Diagnosis:
 
@@ -38,12 +38,12 @@ MonoBehaviour:
 
     Distorted perception.
 
-    
 
-    Observed
-    Effects:
 
-    loss of time
+    Observed Effects:
+
+    loss
+    of time
 
     impaired judgment
 

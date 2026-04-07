@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c21ba27ede379e945b8036602a62a146, type: 3}
   m_Name: Doctor
   m_EditorClassIdentifier: Assembly-CSharp::DocumentData
-  npcId: 
-  documentTitle: 
+  npcId: 'Dr. A.C. '
+  documentTitle: Dr. A.C. Identity
   rawText: 'Name: [Dr. Adrian Clarke]
 
     Age: [56]
@@ -40,4 +40,45 @@ MonoBehaviour:
     withhold information.]
 
 '
-  selectableWords: []
+  selectableWords:
+  - word: Dr. Adrian Clarke
+    notebookEntry: his name Adrian Clarke
+    type: 0
+    targetNpcId: 
+    nodeToUnlock: {fileID: 0}
+  - word: 56
+    notebookEntry: 56 years old
+    type: 0
+    targetNpcId: 
+    nodeToUnlock: {fileID: 0}
+  - word: Psychiatrist
+    notebookEntry: working as my psychiatrist too
+    type: 0
+    targetNpcId: 
+    nodeToUnlock: {fileID: 0}
+  - word: Attending physician
+    notebookEntry: Attending physician
+    type: 0
+    targetNpcId: 
+    nodeToUnlock: {fileID: 0}
+  - word: Specializes in neurological and psychiatric disorders. Prescribes strong
+      medication affecting memory and perception
+    notebookEntry: know lots of info about phychiatric disorders
+    type: 0
+    targetNpcId: 
+    nodeToUnlock: {fileID: 0}
+  - word: Avoids direct answers under pressure
+    notebookEntry: Avoids direct answers under pressure
+    type: 0
+    targetNpcId: 
+    nodeToUnlock: {fileID: 0}
+  - word: Calm and composed
+    notebookEntry: Calm and composed
+    type: 0
+    targetNpcId: 
+    nodeToUnlock: {fileID: 0}
+  - word: Appears to withhold information
+    notebookEntry: Appears to withhold information
+    type: 0
+    targetNpcId: 
+    nodeToUnlock: {fileID: 0}

@@ -13,20 +13,51 @@ MonoBehaviour:
   m_Name: Neighbour
   m_EditorClassIdentifier: Assembly-CSharp::DocumentData
   npcId: 
-  documentTitle: 
+  documentTitle: D.K. Identity
   rawText: 'Name: [Daniel Krane]
 
     Age: [48]
 
-    Relation to Victim: [Lived
-    next door]
+    Relation to Victim: [Lived next
+    door]
 
     Occupation: [Unemployed]
 
-    Medical History: [Lives alone.
-    Limited social interaction. Known to observe surroundings from his window for
-    extended periods.]
+    Medical History: [Lives alone. Limited
+    social interaction. Known to observe surroundings from his window for extended
+    periods.]
 
-    Witness Account: [Observed an unidentified individual
-    near the house after the victim exited.] '
-  selectableWords: []
+    Witness Account: [Observed an unidentified individual near the
+    house after the victim exited.] '
+  selectableWords:
+  - word: Daniel Krane
+    notebookEntry: his name is Daniel Krane
+    type: 0
+    targetNpcId: 
+    nodeToUnlock: {fileID: 0}
+  - word: 48
+    notebookEntry: he is 48
+    type: 0
+    targetNpcId: 
+    nodeToUnlock: {fileID: 0}
+  - word: Lived next door
+    notebookEntry: Victim's neighbour
+    type: 0
+    targetNpcId: 
+    nodeToUnlock: {fileID: 0}
+  - word: Unemployed
+    notebookEntry: Unemployed
+    type: 0
+    targetNpcId: 
+    nodeToUnlock: {fileID: 0}
+  - word: Lives alone. Limited social interaction. Known to observe surroundings
+      from his window for extended periods
+    notebookEntry: Limited social interaction
+    type: 0
+    targetNpcId: 
+    nodeToUnlock: {fileID: 0}
+  - word: Observed an unidentified individual near the house after the victim exited
+    notebookEntry: Saw the one who did this
+    type: 0
+    targetNpcId: 
+    nodeToUnlock: {fileID: 0}
