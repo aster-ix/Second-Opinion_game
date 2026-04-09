@@ -5416,7 +5416,7 @@ MonoBehaviour:
   spawnPointB: {fileID: 673151085}
   AppearedA: 0
   playerCamera: {fileID: 175715815}
-  checkInterval: 10
+  checkInterval: 300
 --- !u!1 &1033887527
 GameObject:
   m_ObjectHideFlags: 0
