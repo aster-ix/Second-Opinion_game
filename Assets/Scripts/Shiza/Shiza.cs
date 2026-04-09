@@ -11,6 +11,7 @@ public class Shiza : MonoBehaviour
 
     [SerializeField] private Transform spawnPointA; // Корридор
     [SerializeField] private Transform spawnPointB; // Комната
+    public bool AppearedA = false;
     [SerializeField] private Camera playerCamera;
 
     [SerializeField] private float checkInterval = 300f;
@@ -93,9 +94,16 @@ public class Shiza : MonoBehaviour
         float cameraAngle = playerCamera.transform.eulerAngles.y;
 
         if (cameraAngle == 180.0f)
+        {
+            AppearedA = false;
             return spawnPointB;
+        }
         else
+        {
+            AppearedA = true;
             return spawnPointA;
+        }
+            
     }
 
     public void DestroyCurrentShiza()

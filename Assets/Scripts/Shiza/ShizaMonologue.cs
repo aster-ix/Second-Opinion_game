@@ -9,7 +9,9 @@ public class ShizaMonologue : MonoBehaviour
     [Header("UI")]
     [SerializeField] private TextMeshProUGUI textField;
     [SerializeField] private GameObject dialoguePanel;
-
+    [SerializeField] public GameObject HUD;
+    [SerializeField] public GameObject NoteBook;
+    [SerializeField] public GameObject Block;
     [Header("Настройки")]
     [SerializeField] private float textSpeed = 0.05f;
     [SerializeField] private string jsonFileName = "Monologue";
@@ -20,7 +22,7 @@ public class ShizaMonologue : MonoBehaviour
     private bool isPlaying = false;
     private bool isTyping = false;
     private Coroutine typingCoroutine;
-
+    public CameraRotation cameraRotation;
     void Start()
     {
         shiza = FindObjectOfType<Shiza>();
@@ -65,12 +67,40 @@ public class ShizaMonologue : MonoBehaviour
         currentLineIndex = 0;
         isPlaying = true;
 
+        Block.SetActive(true);
+        HUD.SetActive(false);
+        NoteBook.SetActive(false);
+
+        StartCoroutine(StartMonologueWithDelay());
+    }
+
+    IEnumerator StartMonologueWithDelay()
+    {
+ 
         if (dialoguePanel != null)
             dialoguePanel.SetActive(true);
 
-        ShowCurrentLine();
-    }
 
+        ShowCurrentLine();
+
+        yield return new WaitForSeconds(2f);
+
+        if (shiza.AppearedA == true)
+        {
+            cameraRotation.RotateLeft();
+        }
+        else
+        {
+            cameraRotation.RotateRight();
+        }
+
+        
+    }
+    IEnumerator Waiter(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+    }
+    
     void ShowCurrentLine()
     {
         if (currentLineIndex < lines.Count)
@@ -110,8 +140,19 @@ public class ShizaMonologue : MonoBehaviour
     {
         isPlaying = false;
         isTyping = false;
-
+        if (shiza.AppearedA == true)
+        {
+            cameraRotation.RotateRight();
+        }
+        else
+        {
+            cameraRotation.RotateLeft();
+        }
+        Block.SetActive(false);
+        HUD.SetActive(true);
+        NoteBook.SetActive(true);
         StartCoroutine(HidePanel());
+
     }
 
     IEnumerator HidePanel()
