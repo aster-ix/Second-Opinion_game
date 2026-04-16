@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7194e3310875b6b4cb3ed53c78fabaf3, type: 3}
+  m_Name: N_q1
+  m_EditorClassIdentifier: Assembly-CSharp::DialogObject
+  text: "\u2026I did. I wish I hadn\u2019t."
+  choices:
+  - text: What exactly did you see?
+    nextNode: {fileID: 11400000, guid: a7e82edd5872ba24c842f088e3fa6edb, type: 2}
+    order: 0
+    isLast: 0
+  - text: Did you hear anything before that?
+    nextNode: {fileID: 11400000, guid: 32a4d245bc2dd39408defe34a20e0115, type: 2}
+    order: 1
+    isLast: 0
+  - text: Did you see the person clearly?
+    nextNode: {fileID: 11400000, guid: 518867bb183c5cf4295d4dad27798cc4, type: 2}
+    order: 2
+    isLast: 0
+  isActive: 1
+  wasSelected: 1

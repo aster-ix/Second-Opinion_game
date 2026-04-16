@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7194e3310875b6b4cb3ed53c78fabaf3, type: 3}
+  m_Name: C_q1
+  m_EditorClassIdentifier: Assembly-CSharp::DialogObject
+  text: I see things all the time)
+  choices:
+  - text: I mean the murder.
+    nextNode: {fileID: 11400000, guid: 80a9a5f20a5e3344b9af3cd954531c9e, type: 2}
+    order: 0
+    isLast: 0
+  - text: What are you smiling at?
+    nextNode: {fileID: 11400000, guid: 90c34c6620ea4794ebbd032fff3fc4bc, type: 2}
+    order: 1
+    isLast: 0
+  isActive: 1
+  wasSelected: 1

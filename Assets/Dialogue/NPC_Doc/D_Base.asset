@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7194e3310875b6b4cb3ed53c78fabaf3, type: 3}
+  m_Name: D_Base
+  m_EditorClassIdentifier: Assembly-CSharp::DialogObject
+  text: 
+  choices:
+  - text: "Doctor\u2026 what are you doing here?"
+    nextNode: {fileID: 11400000, guid: f6009a15e9a4b324e941d059dab6e974, type: 2}
+    order: 0
+    isLast: 0
+  - text: Goodbye Doctor.
+    nextNode: {fileID: 11400000}
+    order: 1
+    isLast: 1
+  isActive: 1
+  wasSelected: 0
